@@ -1,5 +1,6 @@
 package au.com.easygoingapps.bindprocessor;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,21 +9,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import au.com.easygoingapps.bindprocessor.databinding.ActivityMainBinding;
 import com.easygoingapps.annotations.Bind;
 
 public class MainActivity extends AppCompatActivity
 {
 	@Bind(R.id.hello_world)
-	String value;
+	String title = "Hello World";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+		binding.setTitle(title);
+
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener()
 		{
