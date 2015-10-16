@@ -28,6 +28,11 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="bindprocessorapi" exported="" />
+    <orderEntry type="library" exported="" name="commons-collections-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="commons-lang-2.4" level="project" />
+    <orderEntry type="library" exported="" name="commons-logging-1.1" level="project" />
+    <orderEntry type="library" exported="" name="log4j-1.2.12" level="project" />
+    <orderEntry type="library" exported="" name="velocity-1.7" level="project" />
     <orderEntry type="library" exported="" name="bindprocessorcompiler.bindprocessorcompiler" level="project" />
   </component>
 </module>

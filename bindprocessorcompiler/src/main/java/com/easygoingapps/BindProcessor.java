@@ -1,6 +1,10 @@
 package com.easygoingapps;
 
 import com.easygoingapps.annotations.Bind;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.texen.util.PropertiesUtil;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -16,8 +20,9 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.Writer;
+import java.util.Properties;
 import java.util.Set;
 
 @SupportedAnnotationTypes("com.easygoingapps.annotations.Bind")
@@ -43,46 +48,28 @@ public class BindProcessor extends AbstractProcessor
 				VariableElement variableElement = (VariableElement) element;
 				TypeElement classElement = (TypeElement) variableElement.getEnclosingElement();
 				PackageElement packageElement = (PackageElement) classElement.getEnclosingElement();
+
 				try
 				{
-					String className = classElement.getSimpleName() + "ViewBinding";
+					Properties props = new PropertiesUtil().load("velocity.properties");
+					VelocityEngine ve = new VelocityEngine(props);
+					ve.init();
+					VelocityContext vc = new VelocityContext();
+					vc.put("packageName", packageElement.getQualifiedName());
+					vc.put("className", classElement.getSimpleName());
+					vc.put("viewId", element.getAnnotation(Bind.class).value());
+					vc.put("value", "\"Test\"");
+
+					Template template = ve.getTemplate("viewbinding.vm");
+
 					JavaFileObject jfo = filer.createSourceFile(classElement.getQualifiedName() + "ViewBinding");
-					BufferedWriter writer = new BufferedWriter(jfo.openWriter());
-					writer.append("package ");
-					writer.append(packageElement.getQualifiedName());
-					writer.append(";");
-					writer.newLine();
-					writer.newLine();
-					writer.append("import android.app.Activity;");
-					writer.newLine();
-					writer.append("import android.widget.EditText;");
-					writer.newLine();
-					writer.newLine();
-					writer.append("public class ").append(className);
-					writer.newLine();
-					writer.append("{");
-					writer.newLine();
-					//Start of code
-
-					//Start of constructor
-					writer.append("    public ").append(className).append(" (Activity activity)");
-					writer.newLine();
-					writer.append("    {");
-					writer.newLine();
-					writer.append("        EditText editText = (EditText) activity.findViewById(")
-							.append("" + element.getAnnotation(Bind.class).value())
-							.append(");");
-					writer.newLine();
-					writer.append("    }");
-					writer.newLine();
-					//End of constructor
-
-					writer.append("}");
+					Writer writer = jfo.openWriter();
+					template.merge(vc, writer);
 					writer.close();
 				}
 				catch(IOException e)
 				{
-					processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "code generation failed for " + variableElement.getSimpleName(), element);
+					processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "IOException: " + e.getMessage());
 				}
 			}
 		}
