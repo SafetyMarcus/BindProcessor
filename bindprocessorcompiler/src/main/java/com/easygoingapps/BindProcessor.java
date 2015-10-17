@@ -58,7 +58,7 @@ public class BindProcessor extends AbstractProcessor
 					vc.put("packageName", packageElement.getQualifiedName());
 					vc.put("className", classElement.getSimpleName());
 					vc.put("viewId", element.getAnnotation(Bind.class).value());
-					vc.put("value", "\"Test\"");
+					vc.put("value", variableElement.getSimpleName());
 
 					Template template = ve.getTemplate("viewbinding.vm");
 

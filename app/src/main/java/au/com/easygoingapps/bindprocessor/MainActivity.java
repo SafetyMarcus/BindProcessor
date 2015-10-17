@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity
 	private MainActivityViewBinding binding;
 
 	@Bind(R.id.hello_world)
-	State<String> title = new State<>("Hello World");
+	public State<String> title = new State<>("Hello World");
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

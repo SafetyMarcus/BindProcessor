@@ -7,6 +7,7 @@ import android.widget.EditText;
 
 import utils.Observer;
 import utils.State;
+import java.lang.reflect.Field;
 
 public class ${className}ViewBinding
 {
@@ -14,10 +15,19 @@ public class ${className}ViewBinding
 
      public ${className}ViewBinding(Activity activity)
      {
-         String value = (String) ${value};
-         editText = (EditText) activity.findViewById(${viewId});
-         editText.setText(${value});
-         editText.addTextChangedListener(new EditTextBinder(value));
+        try
+        {
+            Field field = activity.getClass().getField("${value}");
+            State<String> value = (State<String>) field.get(activity);
+
+            editText = (EditText) activity.findViewById(${viewId});
+            editText.setText(value.getValue());
+            editText.addTextChangedListener(new EditTextBinder(value));
+        }
+        catch(NoSuchFieldException | IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
      }
 
      public void observe(State<String> state)
@@ -32,9 +42,9 @@ public class ${className}ViewBinding
 
      public class EditTextBinder implements TextWatcher
      {
-       private String value;
+       private State<String> value;
 
-       public EditTextBinder(String value)
+       public EditTextBinder(State<String> value)
        {
          this.value = value;
        }
@@ -52,7 +62,7 @@ public class ${className}ViewBinding
        @Override
        public void afterTextChanged(Editable s)
        {
-           value = s.toString();
+           value.setValue(s.toString());
        }
      }
 
