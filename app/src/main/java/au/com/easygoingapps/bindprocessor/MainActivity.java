@@ -2,23 +2,27 @@ package au.com.easygoingapps.bindprocessor;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import com.easygoingapps.annotations.Bind;
+import utils.State;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity
 {
+	private MainActivityViewBinding binding;
+
 	@Bind(R.id.hello_world)
-	String title = "Hello World";
+	State<String> title = new State<>("Hello World");
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		new MainActivityViewBinding(this);
+		binding = new MainActivityViewBinding(this);
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -28,9 +32,22 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onClick(View view)
 			{
-				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-						.setAction("Action", null).show();
+				title.setValue(String.valueOf(new Random().nextInt(10)));
 			}
 		});
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		binding.unObserve(title);
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		binding.observe(title);
 	}
 }

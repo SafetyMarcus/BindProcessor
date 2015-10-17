@@ -18,6 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+    }
 }
 
 tasks.withType(JavaCompile) { options.fork = true }
@@ -25,10 +29,10 @@ tasks.withType(JavaCompile) { options.fork = true }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile project (':bindprocessorcompiler')
+    compile project(':bindprocessorcompiler')
 
     apt 'com.android.databinding:compiler:1.0-rc0'
-    apt project (':bindprocessorcompiler')
+    apt project(':bindprocessorcompiler')
 
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'

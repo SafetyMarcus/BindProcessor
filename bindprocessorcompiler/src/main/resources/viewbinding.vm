@@ -5,14 +5,29 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import utils.Observer;
+import utils.State;
+
 public class ${className}ViewBinding
 {
+     private EditText editText;
+
      public ${className}ViewBinding(Activity activity)
      {
          String value = (String) ${value};
-         EditText editText = (EditText) activity.findViewById(${viewId});
+         editText = (EditText) activity.findViewById(${viewId});
          editText.setText(${value});
          editText.addTextChangedListener(new EditTextBinder(value));
+     }
+
+     public void observe(State<String> state)
+     {
+        state.observe(stringObserver);
+     }
+
+     public void unObserve(State<String> state)
+     {
+        state.unObserve(stringObserver);
      }
 
      public class EditTextBinder implements TextWatcher
@@ -40,4 +55,13 @@ public class ${className}ViewBinding
            value = s.toString();
        }
      }
+
+     public Observer<String> stringObserver = new Observer<String>()
+     {
+        @Override
+		public void onChange(String value)
+		{
+            editText.setText(value);
+		}
+     };
 }
