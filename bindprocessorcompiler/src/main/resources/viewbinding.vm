@@ -9,6 +9,7 @@ import utils.Observer;
 import utils.State;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ${className}ViewBinding
 {
@@ -18,18 +19,33 @@ public class ${className}ViewBinding
      public ${className}ViewBinding(Activity activity)
      {
         states = new ArrayList<>();
-        try
+
+        HashMap<Integer, String> stateMap = new HashMap<Integer, String>();
+        String mappings = ${mappings};
+        mappings = mappings.substring(1, mappings.length() - 1);
+        String[] values = mappings.split(",");
+        for(String value : values)
         {
-            Field field = activity.getClass().getField("${value}");
-            State<String> value = (State<String>) field.get(activity);
-            states.add(value);
-            editText = (EditText) activity.findViewById(${viewId});
-            editText.setText(value.getValue());
-            editText.addTextChangedListener(new EditTextBinder(value));
+          String[] map = value.split("=");
+          stateMap.put(Integer.valueOf(map[0]), map[1]);
         }
-        catch(NoSuchFieldException | IllegalAccessException e)
+
+        for(Integer viewId : stateMap.keySet())
         {
-            e.printStackTrace();
+            String name = stateMap.get(viewId);
+            try
+            {
+                Field field = activity.getClass().getField(name);
+                State<String> value = (State<String>) field.get(activity);
+                states.add(value);
+                editText = (EditText) activity.findViewById(viewId);
+                editText.setText(value.getValue());
+                editText.addTextChangedListener(new EditTextBinder(value));
+            }
+            catch(NoSuchFieldException | IllegalAccessException e)
+            {
+                e.printStackTrace();
+            }
         }
      }
 

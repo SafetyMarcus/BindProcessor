@@ -5,6 +5,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.texen.util.PropertiesUtil;
+import utils.BindState;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -22,6 +23,7 @@ import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Set;
 
@@ -41,6 +43,8 @@ public class BindProcessor extends AbstractProcessor
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
 	{
+		ArrayList<String> classes = new ArrayList<>();
+		ArrayList<BindState> states = new ArrayList<>();
 		for(Element element : roundEnv.getElementsAnnotatedWith(Bind.class))
 		{
 			if(element.getKind() == ElementKind.FIELD)
@@ -49,28 +53,63 @@ public class BindProcessor extends AbstractProcessor
 				TypeElement classElement = (TypeElement) variableElement.getEnclosingElement();
 				PackageElement packageElement = (PackageElement) classElement.getEnclosingElement();
 
-				try
+				BindState state = null;
+				String className = classElement.getSimpleName().toString();
+				if(!classes.contains(className))
 				{
-					Properties props = new PropertiesUtil().load("velocity.properties");
-					VelocityEngine ve = new VelocityEngine(props);
-					ve.init();
-					VelocityContext vc = new VelocityContext();
-					vc.put("packageName", packageElement.getQualifiedName());
-					vc.put("className", classElement.getSimpleName());
-					vc.put("viewId", element.getAnnotation(Bind.class).value());
-					vc.put("value", variableElement.getSimpleName());
-
-					Template template = ve.getTemplate("viewbinding.vm");
-
-					JavaFileObject jfo = filer.createSourceFile(classElement.getQualifiedName() + "ViewBinding");
-					Writer writer = jfo.openWriter();
-					template.merge(vc, writer);
-					writer.close();
+					classes.add(className);
+					state = new BindState();
+					state.className = className;
+					state.packageName = packageElement.getQualifiedName().toString();
+					state.qualifiedPackageName = packageElement.getQualifiedName().toString();
+					state.qualifiedClassName = classElement.getQualifiedName().toString();
+					states.add(state);
 				}
-				catch(IOException e)
+				else
 				{
-					processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "IOException: " + e.getMessage());
+					for(BindState bindState : states)
+					{
+						if(bindState.className.equals(className))
+						{
+							state = bindState;
+							break;
+						}
+					}
 				}
+
+				if(state == null)
+				{
+					processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Binding state was null");
+					return false;
+				}
+
+				state.mappings.put(element.getAnnotation(Bind.class).value(), variableElement.getSimpleName().toString());
+			}
+		}
+
+		for(BindState state : states)
+		{
+
+			try
+			{
+				Properties props = new PropertiesUtil().load("velocity.properties");
+				VelocityEngine ve = new VelocityEngine(props);
+				ve.init();
+				VelocityContext vc = new VelocityContext();
+				vc.put("packageName", state.qualifiedPackageName);
+				vc.put("className", state.className);
+				vc.put("mappings", "\"" + state.mappings + "\"");
+
+				Template template = ve.getTemplate("viewbinding.vm");
+
+				JavaFileObject jfo = filer.createSourceFile(state.qualifiedClassName + "ViewBinding");
+				Writer writer = jfo.openWriter();
+				template.merge(vc, writer);
+				writer.close();
+			}
+			catch(IOException e)
+			{
+				processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "IOException: " + e.getMessage());
 			}
 		}
 		return true;
