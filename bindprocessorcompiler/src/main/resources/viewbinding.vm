@@ -14,10 +14,10 @@ import java.util.HashMap;
 
 public class ${className}ViewBinding
 {
-     private ArrayList<State> states;
-     private ArrayList<Observer> observers = new ArrayList();
+     private static ArrayList<State> states;
+     private static ArrayList<Observer> observers = new ArrayList();
 
-     public ${className}ViewBinding(Activity activity)
+     public static void bind(Activity activity)
      {
         states = new ArrayList<>();
 
@@ -62,7 +62,7 @@ public class ${className}ViewBinding
         }
      }
 
-     private class EditTextBinder implements TextWatcher
+     private static class EditTextBinder implements TextWatcher
      {
        private State<String> value;
 
@@ -88,7 +88,7 @@ public class ${className}ViewBinding
        }
      }
 
-     private class EditTextObserver implements Observer<String>
+     private static class EditTextObserver implements Observer<String>
      {
        private EditText editText;
        private State state;

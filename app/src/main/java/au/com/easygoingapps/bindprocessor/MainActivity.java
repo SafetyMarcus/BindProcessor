@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		new MainActivityViewBinding(this);
+		MainActivityViewBinding.bind(this);
 
 		((TextView) findViewById(R.id.hello_display)).setText(title.getValue());
 
