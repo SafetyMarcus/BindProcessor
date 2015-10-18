@@ -1,5 +1,6 @@
 package au.com.easygoingapps.bindprocessor;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,9 @@ public class MainActivity extends AppCompatActivity
 
 	@Bind(R.id.hello_checkbox)
 	public State<Boolean> checked = new State<>(true);
+
+	@Bind(R.id.hello_image_view)
+	public State<Integer> colour = new State<>(Color.RED);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -42,6 +46,23 @@ public class MainActivity extends AppCompatActivity
 			public void onClick(View view)
 			{
 				title.setValue(String.valueOf(new Random().nextInt(10)));
+			}
+		});
+
+		FloatingActionButton colFab = (FloatingActionButton) findViewById(R.id.colour_fab);
+		colFab.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				int val = new Random().nextInt(3);
+				int col = Color.RED;
+				if(val == 1)
+					col = Color.BLUE;
+				else if(val == 2)
+					col = Color.GREEN;
+
+				colour.setValue(col);
 			}
 		});
 	}

@@ -1,11 +1,13 @@
 package ${packageName};
 
 import android.app.Activity;
-import android.widget.CompoundButton;
+import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.view.View;
 
 import utils.Observer;
@@ -65,6 +67,16 @@ public class ${className}ViewBinding
 
                   observer = new CheckboxObserver(checkbox, value);
                   value.addObserver(observer);
+                }
+                else if(view instanceof ImageView)
+                {
+                  State<Integer> value = (State<Integer>) field.get(activity);
+                  states.add(value);
+
+                  ImageView imageView = (ImageView) view;
+                  observer = new ImageViewObserver(imageView);
+                  value.addObserver(observer);
+                  value.setValue(value.getValue());
                 }
 
                 observers.add(observer);
@@ -168,6 +180,22 @@ public class ${className}ViewBinding
          state.removeObserver(this);
          checkbox.setChecked(value);
          state.addObserver(this);
+       }
+     }
+
+     private static class ImageViewObserver implements Observer<Integer>
+     {
+       private ImageView imageView;
+
+       public ImageViewObserver(ImageView imageView)
+       {
+         this.imageView = imageView;
+       }
+
+       @Override
+       public void onChange(Integer value)
+       {
+         imageView.setBackground(new ColorDrawable(value));
        }
      }
 }
