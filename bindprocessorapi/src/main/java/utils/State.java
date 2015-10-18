@@ -2,8 +2,7 @@ package utils;
 
 import org.apache.commons.lang3.mutable.Mutable;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 /**
  * @author Marcus Hooper
@@ -11,12 +10,12 @@ import java.util.Set;
 public class State<T> implements Mutable<T>
 {
 	T value;
-	Set<Observer<T>> observers;
+	ArrayList<Observer<T>> observers;
 
 	public State(T value)
 	{
 		this.value = value;
-		observers = new HashSet<>();
+		observers = new ArrayList<>();
 	}
 
 	public void addObserver(Observer<T> observer)
@@ -44,8 +43,8 @@ public class State<T> implements Mutable<T>
 	public void setValue(T value)
 	{
 		this.value = value;
-		for(Observer<T> observer : observers)
-			observer.onChange(value);
+		for(int i = 0, size = observers.size(); i < size; i++)
+			observers.get(i).onChange(value);
 	}
 }
 
