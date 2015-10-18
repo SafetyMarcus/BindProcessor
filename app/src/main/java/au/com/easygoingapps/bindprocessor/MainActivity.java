@@ -14,8 +14,6 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity
 {
-	private MainActivityViewBinding binding;
-
 	@Bind(R.id.hello_world)
 	public State<String> title = new State<>("Hello World");
 
@@ -24,10 +22,11 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		binding = new MainActivityViewBinding(this);
+		new MainActivityViewBinding(this);
 
 		((TextView) findViewById(R.id.hello_display)).setText(title.getValue());
 
+		title.addObserver(observer);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -39,22 +38,6 @@ public class MainActivity extends AppCompatActivity
 				title.setValue(String.valueOf(new Random().nextInt(10)));
 			}
 		});
-	}
-
-	@Override
-	protected void onPause()
-	{
-		super.onPause();
-		binding.unObserve();
-		title.unObserve(observer);
-	}
-
-	@Override
-	protected void onResume()
-	{
-		super.onResume();
-		binding.observe();
-		title.observe(observer);
 	}
 
 	public Observer<String> observer = new Observer<String>()

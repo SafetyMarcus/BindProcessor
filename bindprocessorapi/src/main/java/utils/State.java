@@ -6,18 +6,32 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author Junjun Deng 2015
+ * @author Marcus Hooper
  */
-public class State<T> implements Mutable<T>, Observable<T>
+public class State<T> implements Mutable<T>
 {
 	T value;
-
 	Set<Observer<T>> observers;
 
 	public State(T value)
 	{
 		this.value = value;
 		observers = new HashSet<>();
+	}
+
+	public void addObserver(Observer<T> observer)
+	{
+		observers.add(observer);
+	}
+
+	public void removeObserver(Observer<T> observer)
+	{
+		observers.remove(observer);
+	}
+
+	public void clearObservers()
+	{
+		observers.clear();
 	}
 
 	@Override
@@ -31,21 +45,7 @@ public class State<T> implements Mutable<T>, Observable<T>
 	{
 		this.value = value;
 		for(Observer<T> observer : observers)
-		{
 			observer.onChange(value);
-		}
-	}
-
-	@Override
-	public void observe(Observer<T> observer)
-	{
-		observers.add(observer);
-	}
-
-	@Override
-	public void unObserve(Observer<T> observer)
-	{
-		observers.remove(observer);
 	}
 }
 
