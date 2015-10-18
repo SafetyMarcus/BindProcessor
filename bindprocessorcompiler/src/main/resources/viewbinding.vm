@@ -1,11 +1,11 @@
 package ${packageName};
 
+import au.com.easygoingapps.observers.EditTextObservers.*;
+import au.com.easygoingapps.observers.CheckBoxObservers.*;
+import au.com.easygoingapps.observers.ImageViewObservers.*;
+
 import android.app.Activity;
-import android.graphics.drawable.ColorDrawable;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.view.View;
@@ -19,11 +19,12 @@ import java.util.HashMap;
 public class ${className}ViewBinding
 {
      private static ArrayList<State> states;
-     private static ArrayList<Observer> observers = new ArrayList();
+     private static ArrayList<Observer> observers;
 
      public static void bind(Activity activity)
      {
         states = new ArrayList<>();
+        observers = new ArrayList();
 
         HashMap<Integer, String> stateMap = new HashMap<Integer, String>();
         String mappings = ${mappings};
@@ -86,116 +87,5 @@ public class ${className}ViewBinding
                 e.printStackTrace();
             }
         }
-     }
-
-     private static class EditTextBinder implements TextWatcher
-     {
-       private State<String> value;
-
-       public EditTextBinder(State<String> value)
-       {
-         this.value = value;
-       }
-
-       @Override
-       public void beforeTextChanged(CharSequence s, int start, int count, int after)
-       {
-       }
-
-       @Override
-       public void onTextChanged(CharSequence s, int start, int before, int count)
-       {
-       }
-
-       @Override
-       public void afterTextChanged(Editable s)
-       {
-            value.setValue(s.toString());
-       }
-     }
-
-     private static class EditTextObserver implements Observer<String>
-     {
-       private EditText editText;
-       private State state;
-
-       public EditTextObserver(EditText editText, State state)
-       {
-         this.editText = editText;
-         this.state = state;
-       }
-
-        @Override
-        public void onChange(String value)
-        {
-          state.removeObserver(this);
-          int cursorPosition = editText.getSelectionStart();
-          if(cursorPosition == editText.length())
-            cursorPosition = -1;
-          editText.setText(value);
-          if(cursorPosition == -1)
-            cursorPosition = editText.length();
-          try
-          {
-            editText.setSelection(cursorPosition);
-          }
-          catch(IndexOutOfBoundsException e)
-          {
-            editText.setSelection(editText.length());
-          }
-          state.addObserver(this);
-        }
-     }
-
-     private static class CheckboxBinder implements CompoundButton.OnCheckedChangeListener
-     {
-       private State<Boolean> value;
-
-       public CheckboxBinder(State<Boolean> value)
-       {
-         this.value = value;
-       }
-
-       @Override
-       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-       {
-         value.setValue(isChecked);
-       }
-     }
-
-     private static class CheckboxObserver implements Observer<Boolean>
-     {
-       private CheckBox checkbox;
-       private State<Boolean> state;
-
-       public CheckboxObserver(CheckBox checkbox, State<Boolean> state)
-       {
-         this.checkbox = checkbox;
-         this.state = state;
-       }
-
-       @Override
-       public void onChange(Boolean value)
-       {
-         state.removeObserver(this);
-         checkbox.setChecked(value);
-         state.addObserver(this);
-       }
-     }
-
-     private static class ImageViewObserver implements Observer<Integer>
-     {
-       private ImageView imageView;
-
-       public ImageViewObserver(ImageView imageView)
-       {
-         this.imageView = imageView;
-       }
-
-       @Override
-       public void onChange(Integer value)
-       {
-         imageView.setBackground(new ColorDrawable(value));
-       }
      }
 }

@@ -1,0 +1,24 @@
+package au.com.easygoingapps.observers;
+
+import android.graphics.drawable.ColorDrawable;
+import android.widget.ImageView;
+import utils.Observer;
+
+public class ImageViewObservers
+{
+  public static class ImageViewObserver implements Observer<Integer>
+  {
+    private ImageView imageView;
+
+    public ImageViewObserver(ImageView imageView)
+    {
+      this.imageView = imageView;
+    }
+
+    @Override
+    public void onChange(Integer value)
+    {
+      imageView.setBackground(new ColorDrawable(value));
+    }
+  }
+}

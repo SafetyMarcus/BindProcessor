@@ -1,0 +1,46 @@
+package au.com.easygoingapps.observers;
+
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+
+import utils.Observer;
+import utils.State;
+
+public class CheckBoxObservers
+{
+  public static class CheckboxBinder implements CompoundButton.OnCheckedChangeListener
+  {
+    private State<Boolean> value;
+
+    public CheckboxBinder(State<Boolean> value)
+    {
+      this.value = value;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+    {
+      value.setValue(isChecked);
+    }
+  }
+
+  public static class CheckboxObserver implements Observer<Boolean>
+  {
+    private CheckBox checkbox;
+    private State<Boolean> state;
+
+    public CheckboxObserver(CheckBox checkbox, State<Boolean> state)
+    {
+      this.checkbox = checkbox;
+      this.state = state;
+    }
+
+    @Override
+    public void onChange(Boolean value)
+    {
+      state.removeObserver(this);
+      checkbox.setChecked(value);
+      state.addObserver(this);
+    }
+  }
+}
