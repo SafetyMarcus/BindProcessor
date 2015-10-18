@@ -1,8 +1,10 @@
 package ${packageName};
 
 import android.app.Activity;
+import android.widget.CompoundButton;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.view.View;
 
@@ -27,7 +29,7 @@ public class ${className}ViewBinding
         String[] values = mappings.split(",");
         for(String value : values)
         {
-          String[] map = value.split("=");
+          String[] map = value.trim().split("=");
           stateMap.put(Integer.valueOf(map[0]), map[1]);
         }
 
@@ -37,23 +39,35 @@ public class ${className}ViewBinding
             try
             {
                 Field field = activity.getClass().getField(name);
-                State<String> value = (State<String>) field.get(activity);
-                states.add(value);
-
                 View view = activity.findViewById(viewId);
 
                 Observer observer = null;
                 if(view instanceof EditText)
                 {
+                  State<String> value = (State<String>) field.get(activity);
+                  states.add(value);
+
                   EditText editText = (EditText) view;
                   editText.setText(value.getValue());
                   editText.addTextChangedListener(new EditTextBinder(value));
 
                   observer = new EditTextObserver(editText, value);
+                  value.addObserver(observer);
+                }
+                else if(view instanceof CheckBox)
+                {
+                  State<Boolean> value = (State<Boolean>) field.get(activity);
+                  states.add(value);
+
+                  CheckBox checkbox = (CheckBox) view;
+                  checkbox.setChecked(value.getValue());
+                  checkbox.setOnCheckedChangeListener(new CheckboxBinder(value));
+
+                  observer = new CheckboxObserver(checkbox, value);
+                  value.addObserver(observer);
                 }
 
                 observers.add(observer);
-                value.addObserver(observer);
             }
             catch(NoSuchFieldException | IllegalAccessException e)
             {
@@ -119,5 +133,41 @@ public class ${className}ViewBinding
           }
           state.addObserver(this);
         }
+     }
+
+     private static class CheckboxBinder implements CompoundButton.OnCheckedChangeListener
+     {
+       private State<Boolean> value;
+
+       public CheckboxBinder(State<Boolean> value)
+       {
+         this.value = value;
+       }
+
+       @Override
+       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+       {
+         value.setValue(isChecked);
+       }
+     }
+
+     private static class CheckboxObserver implements Observer<Boolean>
+     {
+       private CheckBox checkbox;
+       private State<Boolean> state;
+
+       public CheckboxObserver(CheckBox checkbox, State<Boolean> state)
+       {
+         this.checkbox = checkbox;
+         this.state = state;
+       }
+
+       @Override
+       public void onChange(Boolean value)
+       {
+         state.removeObserver(this);
+         checkbox.setChecked(value);
+         state.addObserver(this);
+       }
      }
 }
