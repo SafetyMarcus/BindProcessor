@@ -67,27 +67,6 @@ public class BindProcessor extends AbstractProcessor
 		return true;
 	}
 
-	private void createBindingClasses(ArrayList<BindState> states) throws IOException
-	{
-		for(BindState state : states)
-		{
-			Properties props = new PropertiesUtil().load("velocity.properties");
-			VelocityEngine ve = new VelocityEngine(props);
-			ve.init();
-			VelocityContext vc = new VelocityContext();
-			vc.put("packageName", state.qualifiedPackageName);
-			vc.put("className", state.className);
-			vc.put("mappings", "\"" + state.mappings + "\"");
-
-			Template template = ve.getTemplate("viewbinding.vm");
-
-			JavaFileObject jfo = filer.createSourceFile(state.qualifiedClassName + "ViewBinding");
-			Writer writer = jfo.openWriter();
-			template.merge(vc, writer);
-			writer.close();
-		}
-	}
-
 	private void setUpObservers() throws IOException
 	{
 		HashMap<String, String> observers = new HashMap<>();
@@ -95,13 +74,13 @@ public class BindProcessor extends AbstractProcessor
 		observers.put("checkboxbinding.vm", "au.com.easygoingapps.observers.CheckBoxObservers");
 		observers.put("imageviewbinding.vm", "au.com.easygoingapps.observers.ImageViewObservers");
 
-		Properties props = new PropertiesUtil().load("velocity.properties");
-		VelocityEngine ve = new VelocityEngine(props);
-		ve.init();
-		VelocityContext vc = new VelocityContext();
-
 		for(String templateName : observers.keySet())
 		{
+			Properties props = new PropertiesUtil().load("velocity.properties");
+			VelocityEngine ve = new VelocityEngine(props);
+			ve.init();
+			VelocityContext vc = new VelocityContext();
+
 			Template template = ve.getTemplate(templateName);
 
 			JavaFileObject jfo = filer.createSourceFile(observers.get(templateName));
@@ -153,5 +132,26 @@ public class BindProcessor extends AbstractProcessor
 		}
 
 		return states;
+	}
+
+	private void createBindingClasses(ArrayList<BindState> states) throws IOException
+	{
+		for(BindState state : states)
+		{
+			Properties props = new PropertiesUtil().load("velocity.properties");
+			VelocityEngine ve = new VelocityEngine(props);
+			ve.init();
+			VelocityContext vc = new VelocityContext();
+			vc.put("packageName", state.qualifiedPackageName);
+			vc.put("className", state.className);
+			vc.put("mappings", "\"" + state.mappings + "\"");
+
+			Template template = ve.getTemplate("viewbinding.vm");
+
+			JavaFileObject jfo = filer.createSourceFile(state.qualifiedClassName + "ViewBinding");
+			Writer writer = jfo.openWriter();
+			template.merge(vc, writer);
+			writer.close();
+		}
 	}
 }
