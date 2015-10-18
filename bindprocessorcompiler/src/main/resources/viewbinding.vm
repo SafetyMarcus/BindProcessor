@@ -8,18 +8,21 @@ import android.widget.EditText;
 import utils.Observer;
 import utils.State;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 public class ${className}ViewBinding
 {
      private EditText editText;
+     private ArrayList<State> states;
 
      public ${className}ViewBinding(Activity activity)
      {
+        states = new ArrayList<>();
         try
         {
             Field field = activity.getClass().getField("${value}");
             State<String> value = (State<String>) field.get(activity);
-
+            states.add(value);
             editText = (EditText) activity.findViewById(${viewId});
             editText.setText(value.getValue());
             editText.addTextChangedListener(new EditTextBinder(value));
@@ -30,14 +33,16 @@ public class ${className}ViewBinding
         }
      }
 
-     public void observe(State<String> state)
+     public void observe()
      {
-        state.observe(stringObserver);
+        for(State state : states)
+            state.observe(stringObserver);
      }
 
-     public void unObserve(State<String> state)
+     public void unObserve()
      {
-        state.unObserve(stringObserver);
+       for(State state : states)
+           state.unObserve(stringObserver);
      }
 
      public class EditTextBinder implements TextWatcher
@@ -62,7 +67,7 @@ public class ${className}ViewBinding
        @Override
        public void afterTextChanged(Editable s)
        {
-           value.setValue(s.toString());
+            value.setValue(s.toString());
        }
      }
 
@@ -70,8 +75,23 @@ public class ${className}ViewBinding
      {
         @Override
 		public void onChange(String value)
-		{
+	    {
+            unObserve();
+            int cursorPosition = editText.getSelectionStart();
+            if(cursorPosition == editText.length())
+                cursorPosition = -1;
             editText.setText(value);
-		}
+            if(cursorPosition == -1)
+                cursorPosition = editText.length();
+            try
+    	    {
+    	        editText.setSelection(cursorPosition);
+    		}
+    		catch(IndexOutOfBoundsException e)
+    		{
+                editText.setSelection(editText.length());
+    		}
+            observe();
+	    }
      };
 }

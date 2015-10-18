@@ -5,7 +5,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 import com.easygoingapps.annotations.Bind;
+import utils.Observer;
 import utils.State;
 
 import java.util.Random;
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity
 		setContentView(R.layout.activity_main);
 		binding = new MainActivityViewBinding(this);
 
+		((TextView) findViewById(R.id.hello_display)).setText(title.getValue());
+
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -41,13 +45,24 @@ public class MainActivity extends AppCompatActivity
 	protected void onPause()
 	{
 		super.onPause();
-		binding.unObserve(title);
+		binding.unObserve();
+		title.unObserve(observer);
 	}
 
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
-		binding.observe(title);
+		binding.observe();
+		title.observe(observer);
 	}
+
+	public Observer<String> observer = new Observer<String>()
+	{
+		@Override
+		public void onChange(String value)
+		{
+			((TextView) findViewById(R.id.hello_display)).setText(value);
+		}
+	};
 }
