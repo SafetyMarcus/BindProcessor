@@ -1,5 +1,6 @@
 package au.com.easygoingapps.bindprocessor;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onClick(View view)
 			{
+				Intent intent = new Intent(MainActivity.this, DescriptionTest.class);
+				startActivity(intent);
 				title.setValue(String.valueOf(new Random().nextInt(10)));
 			}
 		});
