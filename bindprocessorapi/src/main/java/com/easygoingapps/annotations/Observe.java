@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.FIELD)
-public @interface Bind
+public @interface Observe
 {
 	//ResId of view to bind to annotated field
 	int value();

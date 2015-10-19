@@ -21,7 +21,7 @@ public class ${className}ViewBinding
      private static ArrayList<State> states;
      private static ArrayList<Observer> observers;
 
-     public static void bind(Activity activity)
+     public static void watch(Activity activity)
      {
         states = new ArrayList<>();
         observers = new ArrayList();
@@ -51,11 +51,11 @@ public class ${className}ViewBinding
                   states.add(value);
 
                   EditText editText = (EditText) view;
-                  editText.setText(value.getValue());
                   editText.addTextChangedListener(new EditTextBinder(value));
 
                   observer = new EditTextObserver(editText, value);
                   value.addObserver(observer);
+                  value.setValue(value.getValue());
                 }
                 else if(view instanceof CheckBox)
                 {
@@ -63,11 +63,11 @@ public class ${className}ViewBinding
                   states.add(value);
 
                   CheckBox checkbox = (CheckBox) view;
-                  checkbox.setChecked(value.getValue());
                   checkbox.setOnCheckedChangeListener(new CheckboxBinder(value));
 
                   observer = new CheckboxObserver(checkbox, value);
                   value.addObserver(observer);
+                  value.setValue(value.getValue());
                 }
                 else if(view instanceof ImageView)
                 {

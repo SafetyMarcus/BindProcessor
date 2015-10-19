@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
-import com.easygoingapps.annotations.Bind;
+import com.easygoingapps.annotations.Observe;
 import utils.Observer;
 import utils.State;
 
@@ -15,13 +15,13 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity
 {
-	@Bind(R.id.hello_world)
+	@Observe(R.id.hello_world)
 	public State<String> title = new State<>("Hello World");
 
-	@Bind(R.id.hello_checkbox)
+	@Observe(R.id.hello_checkbox)
 	public State<Boolean> checked = new State<>(true);
 
-	@Bind(R.id.hello_image_view)
+	@Observe(R.id.hello_image_view)
 	public State<Integer> colour = new State<>(Color.RED);
 
 	@Override
@@ -29,13 +29,12 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		MainActivityViewBinding.bind(this);
 
-		((TextView) findViewById(R.id.hello_display)).setText(title.getValue());
-		((TextView) findViewById(R.id.checkbox_display)).setText(checked.getValue() ? "checked" : "unchecked");
-
+		//Setting update observers before watching so that
+		//they catch the first update that comes in watch()
 		title.addObserver(stringObserver);
 		checked.addObserver(boolObserver);
+		MainActivityViewBinding.watch(this);
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);

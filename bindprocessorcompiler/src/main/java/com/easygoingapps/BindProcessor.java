@@ -1,6 +1,6 @@
 package com.easygoingapps;
 
-import com.easygoingapps.annotations.Bind;
+import com.easygoingapps.annotations.Observe;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
 
-@SupportedAnnotationTypes("com.easygoingapps.annotations.Bind")
+@SupportedAnnotationTypes("com.easygoingapps.annotations.Observe")
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class BindProcessor extends AbstractProcessor
 {
@@ -94,7 +94,7 @@ public class BindProcessor extends AbstractProcessor
 	{
 		ArrayList<String> classes = new ArrayList<>();
 		ArrayList<BindState> states = new ArrayList<>();
-		for(Element element : roundEnv.getElementsAnnotatedWith(Bind.class))
+		for(Element element : roundEnv.getElementsAnnotatedWith(Observe.class))
 		{
 			if(element.getKind() == ElementKind.FIELD)
 			{
@@ -127,7 +127,7 @@ public class BindProcessor extends AbstractProcessor
 				}
 
 				if(state != null)
-					state.mappings.put(element.getAnnotation(Bind.class).value(), variableElement.getSimpleName().toString());
+					state.mappings.put(element.getAnnotation(Observe.class).value(), variableElement.getSimpleName().toString());
 			}
 		}
 
