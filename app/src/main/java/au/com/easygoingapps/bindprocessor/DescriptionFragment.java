@@ -33,7 +33,7 @@ public class DescriptionFragment extends DialogFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View view = View.inflate(getActivity(), R.layout.description_fragment, container);
-		DescriptionFragmentViewBinding.watch(getActivity());
+		DescriptionFragmentViewBinding.watch(view, this);
 
 		return view;
 	}

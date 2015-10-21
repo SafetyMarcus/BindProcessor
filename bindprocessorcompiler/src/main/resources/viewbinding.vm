@@ -3,11 +3,14 @@ package ${packageName};
 import au.com.easygoingapps.observers.EditTextObservers.*;
 import au.com.easygoingapps.observers.CheckBoxObservers.*;
 import au.com.easygoingapps.observers.ImageViewObservers.*;
+import au.com.easygoingapps.observers.TextViewObservers.*;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.view.View;
 
 import utils.Observer;
@@ -79,6 +82,16 @@ public class ${className}ViewBinding
                   value.addObserver(observer);
                   value.setValue(value.getValue());
                 }
+                else if(view instanceof TextView)
+                {
+                  State<Object> value = (State<Object>) field.get(activity);
+                  states.add(value);
+
+                  TextView textView = (TextView) view;
+                  observer = new TextViewObserver(textView);
+                  value.addObserver(observer);
+                  value.setValue(value.getValue());
+                }
 
                 observers.add(observer);
             }
@@ -87,5 +100,83 @@ public class ${className}ViewBinding
                 e.printStackTrace();
             }
         }
+     }
+
+     public static void watch(View layout, Fragment fragment)
+     {
+       states = new ArrayList<>();
+       observers = new ArrayList();
+
+       HashMap<Integer, String> stateMap = new HashMap<Integer, String>();
+       String mappings = ${mappings};
+       mappings = mappings.substring(1, mappings.length() - 1);
+       String[] values = mappings.split(",");
+       for(String value : values)
+       {
+         String[] map = value.trim().split("=");
+         stateMap.put(Integer.valueOf(map[0]), map[1]);
+       }
+
+       for(Integer viewId : stateMap.keySet())
+       {
+           String name = stateMap.get(viewId);
+           try
+           {
+               Field field = fragment.getClass().getField(name);
+               View view = layout.findViewById(viewId);
+
+               Observer observer = null;
+               if(view instanceof EditText)
+               {
+                 State<String> value = (State<String>) field.get(fragment);
+                 states.add(value);
+
+                 EditText editText = (EditText) view;
+                 editText.addTextChangedListener(new EditTextBinder(value));
+
+                 observer = new EditTextObserver(editText, value);
+                 value.addObserver(observer);
+                 value.setValue(value.getValue());
+               }
+               else if(view instanceof CheckBox)
+               {
+                 State<Boolean> value = (State<Boolean>) field.get(fragment);
+                 states.add(value);
+
+                 CheckBox checkbox = (CheckBox) view;
+                 checkbox.setOnCheckedChangeListener(new CheckboxBinder(value));
+
+                 observer = new CheckboxObserver(checkbox, value);
+                 value.addObserver(observer);
+                 value.setValue(value.getValue());
+               }
+               else if(view instanceof ImageView)
+               {
+                 State<Integer> value = (State<Integer>) field.get(fragment);
+                 states.add(value);
+
+                 ImageView imageView = (ImageView) view;
+                 observer = new ImageViewObserver(imageView);
+                 value.addObserver(observer);
+                 value.setValue(value.getValue());
+               }
+               else if(view instanceof TextView)
+               {
+                 State<Object> value = (State<Object>) field.get(fragment);
+                 states.add(value);
+
+                 TextView textView = (TextView) view;
+                 observer = new TextViewObserver(textView);
+                 value.addObserver(observer);
+                 value.setValue(value.getValue());
+               }
+
+               observers.add(observer);
+           }
+           catch(NoSuchFieldException | IllegalAccessException e)
+           {
+               e.printStackTrace();
+           }
+       }
      }
 }

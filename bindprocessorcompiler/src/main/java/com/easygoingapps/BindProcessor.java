@@ -73,6 +73,7 @@ public class BindProcessor extends AbstractProcessor
 		observers.put("edittextbinding.vm", "au.com.easygoingapps.observers.EditTextObservers");
 		observers.put("checkboxbinding.vm", "au.com.easygoingapps.observers.CheckBoxObservers");
 		observers.put("imageviewbinding.vm", "au.com.easygoingapps.observers.ImageViewObservers");
+		observers.put("textviewbinding.vm", "au.com.easygoingapps.observers.TextViewObservers");
 
 		for(String templateName : observers.keySet())
 		{

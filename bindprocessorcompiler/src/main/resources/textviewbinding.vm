@@ -1,0 +1,24 @@
+package au.com.easygoingapps.observers;
+
+import android.graphics.drawable.ColorDrawable;
+import android.widget.TextView;
+import utils.Observer;
+
+public class TextViewObservers
+{
+  public static class TextViewObserver implements Observer<Object>
+  {
+    private TextView textView;
+
+    public TextViewObserver(TextView textView)
+    {
+      this.textView = textView;
+    }
+
+    @Override
+    public void onChange(Object value)
+    {
+      textView.setText(value.toString());
+    }
+  }
+}
