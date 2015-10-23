@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity
 	@Observe(R.id.hello_image_view)
 	public State<Integer> colour = new State<>(Color.RED);
 
+	@Observe(R.id.var_check)
+	public State<String> varName;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity
 		//they catch the first update that comes in watch()
 		title.addObserver(stringObserver);
 		checked.addObserver(boolObserver);
+		varName = DescriptionManager.getCurrentDescriptor().title;
 		MainActivityViewBinding.watch(this);
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
