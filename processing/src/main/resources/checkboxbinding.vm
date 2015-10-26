@@ -1,4 +1,4 @@
-package au.com.easygoingapps.observers;
+package au.com.easygoingapps.thepolice.observers;
 
 import android.widget.CheckBox;
 import android.widget.CompoundButton;

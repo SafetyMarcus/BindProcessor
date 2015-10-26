@@ -1,4 +1,4 @@
-package au.com.easygoingapps.bindprocessor;
+package au.com.easygoingapps.test;
 
 import org.junit.Test;
 

@@ -17,5 +17,5 @@ task policeJar(type: Jar){
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project (':bindprocessorapi')
+    compile project (':thepolice')
 }

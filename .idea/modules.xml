@@ -4,8 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BindProcessor.iml" filepath="$PROJECT_DIR$/BindProcessor.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bindprocessorapi/bindprocessorapi.iml" filepath="$PROJECT_DIR$/bindprocessorapi/bindprocessorapi.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bindprocessorcompiler/bindprocessorcompiler.iml" filepath="$PROJECT_DIR$/bindprocessorcompiler/bindprocessorcompiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/processing/processing.iml" filepath="$PROJECT_DIR$/processing/processing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/thepolice/thepolice.iml" filepath="$PROJECT_DIR$/thepolice/thepolice.iml" />
     </modules>
   </component>
 </project>

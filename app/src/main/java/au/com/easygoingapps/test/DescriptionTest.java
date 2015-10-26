@@ -1,8 +1,9 @@
-package au.com.easygoingapps.bindprocessor;
+package au.com.easygoingapps.test;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import au.com.easygoingapps.bindprocessor.R;
 import com.easygoingapps.annotations.Observe;
 import utils.State;
 
@@ -24,7 +25,7 @@ public class DescriptionTest extends Activity
 		Descriptor descriptor = DescriptionManager.getCurrentDescriptor();
 		title = descriptor.title;
 		description = descriptor.description;
-		DescriptionTestViewBinding.watch(this);
+		DescriptionTestBinding.watch(this);
 
 		findViewById(R.id.fab).setOnClickListener(new View.OnClickListener()
 		{

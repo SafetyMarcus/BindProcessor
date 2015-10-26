@@ -1,4 +1,4 @@
-package au.com.easygoingapps.bindprocessor;
+package au.com.easygoingapps.test;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import au.com.easygoingapps.bindprocessor.R;
 import com.easygoingapps.annotations.Observe;
 import utils.Observer;
 import utils.State;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity
 		title.addObserver(stringObserver);
 		checked.addObserver(boolObserver);
 		varName = DescriptionManager.getCurrentDescriptor().title;
-		MainActivityViewBinding.watch(this);
+		MainActivityBinding.watch(this);
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);

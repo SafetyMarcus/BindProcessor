@@ -30,8 +30,9 @@ import java.util.Set;
 
 @SupportedAnnotationTypes("com.easygoingapps.annotations.Observe")
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
-public class BindProcessor extends AbstractProcessor
+public class ThePoliceProcessor extends AbstractProcessor
 {
+	private static final String PREFIX = "au.com.easygoingapps.thepolice.observers.";
 	Filer filer;
 
 	@Override
@@ -70,10 +71,10 @@ public class BindProcessor extends AbstractProcessor
 	private void setUpObservers() throws IOException
 	{
 		HashMap<String, String> observers = new HashMap<>();
-		observers.put("edittextbinding.vm", "au.com.easygoingapps.observers.EditTextObservers");
-		observers.put("checkboxbinding.vm", "au.com.easygoingapps.observers.CheckBoxObservers");
-		observers.put("imageviewbinding.vm", "au.com.easygoingapps.observers.ImageViewObservers");
-		observers.put("textviewbinding.vm", "au.com.easygoingapps.observers.TextViewObservers");
+		observers.put("edittextbinding.vm", PREFIX + "EditTextObservers");
+		observers.put("checkboxbinding.vm", PREFIX + "CheckBoxObservers");
+		observers.put("imageviewbinding.vm", PREFIX + "ImageViewObservers");
+		observers.put("textviewbinding.vm", PREFIX + "TextViewObservers");
 
 		for(String templateName : observers.keySet())
 		{
@@ -149,7 +150,7 @@ public class BindProcessor extends AbstractProcessor
 
 			Template template = ve.getTemplate("viewbinding.vm");
 
-			JavaFileObject jfo = filer.createSourceFile(state.qualifiedClassName + "ViewBinding");
+			JavaFileObject jfo = filer.createSourceFile(state.qualifiedClassName + "Binding");
 			Writer writer = jfo.openWriter();
 			template.merge(vc, writer);
 			writer.close();

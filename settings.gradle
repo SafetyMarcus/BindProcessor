@@ -1,1 +1,1 @@
-include ':app', ':bindprocessorcompiler', ':bindprocessorapi'
+include ':app', ':processing', ':thepolice'

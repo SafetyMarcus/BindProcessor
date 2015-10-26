@@ -1,9 +1,9 @@
 package ${packageName};
 
-import au.com.easygoingapps.observers.EditTextObservers.*;
-import au.com.easygoingapps.observers.CheckBoxObservers.*;
-import au.com.easygoingapps.observers.ImageViewObservers.*;
-import au.com.easygoingapps.observers.TextViewObservers.*;
+import au.com.easygoingapps.thepolice.observers.EditTextObservers.*;
+import au.com.easygoingapps.thepolice.observers.CheckBoxObservers.*;
+import au.com.easygoingapps.thepolice.observers.ImageViewObservers.*;
+import au.com.easygoingapps.thepolice.observers.TextViewObservers.*;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -19,7 +19,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ${className}ViewBinding
+public class ${className}Binding
 {
      private static ArrayList<State> states;
      private static ArrayList<Observer> observers;

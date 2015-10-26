@@ -10,8 +10,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/bindprocessorapi" />
-            <option value="$PROJECT_DIR$/bindprocessorcompiler" />
+            <option value="$PROJECT_DIR$/processing" />
+            <option value="$PROJECT_DIR$/thepolice" />
           </set>
         </option>
       </GradleProjectSettings>
