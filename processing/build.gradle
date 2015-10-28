@@ -10,7 +10,7 @@ task policeJar(type: Jar){
     manifest{
         attributes 'Implementation-Title' : 'ThePolice',
                 'Implementation-Version' : version,
-                'Main-Class' : 'com.easygoingapps.bindprocessor'
+                'Main-Class' : 'com.easygoingapps.ThePoliceProcessor'
     }
     baseName = 'ThePolice'
     from {configurations.compile.collect{it.isDirectory() ? it : zipTree(it)}}
