@@ -14,6 +14,9 @@ The binding is then linked by calling `<class_name>ViewBinding.watch(activity);`
 
 #Gradle
 ThePolice can be included in any gradle project that has maven access by adding
-`com.safetymarcus.thepolice:thepolice:1.0`
+`com.safetymarcus.thepolice:processing:1.0.3`
+
+#Jar
+Download the latest <a href="https://drive.google.com/file/d/0B9zL9B65mpLlMi14MF91NTEyakk/view?usp=sharing">JAR</a> and add it to your project
 
 That's it! It's that simple.
