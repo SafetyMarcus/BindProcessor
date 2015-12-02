@@ -1,4 +1,4 @@
-package utils;
+package com.easygoingapps.utils;
 
 import java.util.HashMap;
 

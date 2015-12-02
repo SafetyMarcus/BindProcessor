@@ -3,8 +3,8 @@ package au.com.easygoingapps.thepolice.observers;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import utils.Observer;
-import utils.State;
+import com.easygoingapps.utils.Observer;
+import com.easygoingapps.utils.State;
 
 public class CheckBoxObservers
 {

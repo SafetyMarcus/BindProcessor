@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import au.com.easygoingapps.bindprocessor.R;
 import com.easygoingapps.annotations.Observe;
-import utils.State;
+import com.easygoingapps.utils.State;
 
 /**
  * @author Marcus Hooper

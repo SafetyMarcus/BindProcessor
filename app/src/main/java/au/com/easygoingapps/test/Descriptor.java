@@ -1,6 +1,6 @@
 package au.com.easygoingapps.test;
 
-import utils.State;
+import com.easygoingapps.utils.State;
 
 /**
  * @author Marcus Hooper

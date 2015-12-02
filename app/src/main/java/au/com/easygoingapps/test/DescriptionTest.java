@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import au.com.easygoingapps.bindprocessor.R;
 import com.easygoingapps.annotations.Observe;
-import utils.State;
+import com.easygoingapps.utils.State;
 
 /**
  * @author Marcus Hooper

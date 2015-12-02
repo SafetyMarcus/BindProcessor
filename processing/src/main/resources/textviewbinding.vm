@@ -2,7 +2,7 @@ package au.com.easygoingapps.thepolice.observers;
 
 import android.graphics.drawable.ColorDrawable;
 import android.widget.TextView;
-import utils.Observer;
+import com.easygoingapps.utils.Observer;
 
 public class TextViewObservers
 {

@@ -4,8 +4,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import utils.Observer;
-import utils.State;
+import com.easygoingapps.utils.Observer;
+import com.easygoingapps.utils.State;
 
 public class EditTextObservers
 {

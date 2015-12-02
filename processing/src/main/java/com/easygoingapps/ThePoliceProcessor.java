@@ -5,7 +5,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.texen.util.PropertiesUtil;
-import utils.BindState;
+import com.easygoingapps.utils.BindState;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;

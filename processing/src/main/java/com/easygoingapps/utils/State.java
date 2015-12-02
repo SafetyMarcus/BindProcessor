@@ -1,4 +1,4 @@
-package utils;
+package com.easygoingapps.utils;
 
 import org.apache.commons.lang3.mutable.Mutable;
 
