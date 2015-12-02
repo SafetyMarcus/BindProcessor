@@ -17,6 +17,6 @@ ThePolice can be included in any gradle project that has maven access by adding
 `com.safetymarcus.thepolice:processing:1.0.3`
 
 #Jar
-Download the latest <a href="https://drive.google.com/file/d/0B9zL9B65mpLlMi14MF91NTEyakk/view?usp=sharing">JAR</a> and add it to your project
+Download the latest <a href="https://drive.google.com/file/d/0B9zL9B65mpLlMi14MF91NTEyakk/view?usp=sharing">JAR</a> and add it to your project. This will also require that you add `classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'` to your top level `build.gradle` and `apply plugin: 'com.neenbedankt.android-apt'` to your module `build.gradle`.
 
 That's it! It's that simple.
