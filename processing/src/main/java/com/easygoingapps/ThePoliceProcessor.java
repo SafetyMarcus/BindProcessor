@@ -1,11 +1,13 @@
 package com.easygoingapps;
 
 import com.easygoingapps.annotations.Observe;
+import com.easygoingapps.generators.CheckBoxBinderGenerator;
+import com.easygoingapps.generators.SourceGenerator;
+import com.easygoingapps.utils.BindState;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.texen.util.PropertiesUtil;
-import com.easygoingapps.utils.BindState;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -24,7 +26,6 @@ import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
 
@@ -32,7 +33,6 @@ import java.util.Set;
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class ThePoliceProcessor extends AbstractProcessor
 {
-	private static final String PREFIX = "au.com.easygoingapps.thepolice.observers.";
 	Filer filer;
 
 	@Override
@@ -70,24 +70,13 @@ public class ThePoliceProcessor extends AbstractProcessor
 
 	private void setUpObservers() throws IOException
 	{
-		HashMap<String, String> observers = new HashMap<>();
-		observers.put("edittextbinding.vm", PREFIX + "EditTextObservers");
-		observers.put("checkboxbinding.vm", PREFIX + "CheckBoxObservers");
-		observers.put("imageviewbinding.vm", PREFIX + "ImageViewObservers");
-		observers.put("textviewbinding.vm", PREFIX + "TextViewObservers");
-
-		for(String templateName : observers.keySet())
+		ArrayList<SourceGenerator> generators = new ArrayList<>();
+		generators.add(new CheckBoxBinderGenerator());
+		for(SourceGenerator generator : generators)
 		{
-			Properties props = new PropertiesUtil().load("velocity.properties");
-			VelocityEngine ve = new VelocityEngine(props);
-			ve.init();
-			VelocityContext vc = new VelocityContext();
-
-			Template template = ve.getTemplate(templateName);
-
-			JavaFileObject jfo = filer.createSourceFile(observers.get(templateName));
+			JavaFileObject jfo = filer.createSourceFile(generator.className);
 			Writer writer = jfo.openWriter();
-			template.merge(vc, writer);
+			writer.write(generator.generate());
 			writer.close();
 		}
 	}
