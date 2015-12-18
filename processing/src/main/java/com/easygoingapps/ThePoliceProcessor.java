@@ -5,6 +5,7 @@ import com.easygoingapps.generators.CheckBoxBinderGenerator;
 import com.easygoingapps.generators.CheckBoxObserverGenerator;
 import com.easygoingapps.generators.EditTextBinderGenerator;
 import com.easygoingapps.generators.EditTextObserverGenerator;
+import com.easygoingapps.generators.ImageViewObserverGenerator;
 import com.easygoingapps.generators.SourceGenerator;
 import com.easygoingapps.generators.TextViewObserverGenerator;
 import com.easygoingapps.generators.ViewBindingGenerator;
@@ -78,6 +79,7 @@ public class ThePoliceProcessor extends AbstractProcessor
 		generators.add(new CheckBoxObserverGenerator());
 		generators.add(new EditTextBinderGenerator());
 		generators.add(new EditTextObserverGenerator());
+		generators.add(new ImageViewObserverGenerator());
 		generators.add(new TextViewObserverGenerator());
 		for(SourceGenerator generator : generators)
 		{
