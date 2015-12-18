@@ -47,17 +47,17 @@ public class EditTextBinderGenerator extends SourceGenerator
 	{
 		CodeBuilder body = new CodeBuilder();
 
-		body.appendIndent(1).appendOverride()
-				.appendIndent(1).append("public void beforeTextChanged(CharSequence s, int start, int count, int after)\n")
-				.appendIndent(1).append("{\n").appendIndent(1).append("}\n\n")
-				.appendIndent(1).append("@Override\n")
-				.appendIndent(1).append("public void onTextChanged(CharSequence s, int start, int before, int count)\n")
-				.appendIndent(1).append("{\n").appendIndent(1).append("}\n\n")
-				.appendIndent(1).append("@Override\n")
-				.appendIndent(1).append("public void afterTextChanged(Editable s)\n")
-				.appendIndent(1).append("{\n")
-				.appendIndent(2).append("value.setValue(s.toString());\n")
-				.appendIndent(1).append("}");
+		body.indent(1).appendOverride()
+				.indent(1).append("public void beforeTextChanged(CharSequence s, int start, int count, int after)\n")
+				.indent(1).append("{\n").indent(1).append("}\n\n")
+				.indent(1).append("@Override\n")
+				.indent(1).append("public void onTextChanged(CharSequence s, int start, int before, int count)\n")
+				.indent(1).append("{\n").indent(1).append("}\n\n")
+				.indent(1).append("@Override\n")
+				.indent(1).append("public void afterTextChanged(Editable s)\n")
+				.indent(1).append("{\n")
+				.indent(2).append("value.setValue(s.toString());\n")
+				.indent(1).append("}");
 
 		return body.toString();
 	}

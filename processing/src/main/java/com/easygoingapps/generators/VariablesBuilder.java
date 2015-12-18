@@ -9,7 +9,7 @@ public class VariablesBuilder extends SourceBuilder
 
 	public VariablesBuilder appendVariable(SourceVariable variable, boolean doubleSpace)
 	{
-		variables.appendIndent(1).append(variable.access).append(" ")
+		variables.indent(1).append(variable.access).append(" ")
 				.append(variable.type).append(" ").append(variable.name).append(";\n");
 
 		if(doubleSpace)

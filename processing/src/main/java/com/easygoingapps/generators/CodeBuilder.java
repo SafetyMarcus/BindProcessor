@@ -9,7 +9,7 @@ public class CodeBuilder
 
 	private final StringBuilder builder = new StringBuilder();
 
-	public CodeBuilder appendIndent(int level)
+	public CodeBuilder indent(int level)
 	{
 		while(level-- > 0)
 			builder.append(INDENT);

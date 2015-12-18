@@ -50,12 +50,12 @@ public class CheckBoxObserverGenerator extends SourceGenerator
 	@Override
 	public String getBody()
 	{
-		return new CodeBuilder().appendIndent(1).appendOverride()
-				.appendIndent(1).append("public void onChange(Boolean value)\n")
-				.appendIndent(1).append("{\n")
-				.appendIndent(2).append("state.removeObserver(this);\n")
-				.appendIndent(2).append("checkbox.setChecked(value);\n")
-				.appendIndent(2).append("state.addObserver(this);\n")
-				.appendIndent(1).append("}").toString();
+		return new CodeBuilder().indent(1).appendOverride()
+				.indent(1).append("public void onChange(Boolean value)\n")
+				.indent(1).append("{\n")
+				.indent(2).append("state.removeObserver(this);\n")
+				.indent(2).append("checkbox.setChecked(value);\n")
+				.indent(2).append("state.addObserver(this);\n")
+				.indent(1).append("}").toString();
 	}
 }

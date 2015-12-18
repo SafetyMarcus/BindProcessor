@@ -41,10 +41,10 @@ public class TextViewObserverGenerator extends SourceGenerator
 	@Override
 	public String getBody()
 	{
-		return new CodeBuilder().appendIndent(1).appendOverride()
-				.appendIndent(1).append("public void onChange(Object value)\n")
-				.appendIndent(1).append("{\n")
-				.appendIndent(2).append("textView.setText(value.toString());\n")
-				.appendIndent(1).append("}\n").toString();
+		return new CodeBuilder().indent(1).appendOverride()
+				.indent(1).append("public void onChange(Object value)\n")
+				.indent(1).append("{\n")
+				.indent(2).append("textView.setText(value.toString());\n")
+				.indent(1).append("}\n").toString();
 	}
 }

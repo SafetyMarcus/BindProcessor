@@ -50,26 +50,26 @@ public class EditTextObserverGenerator extends SourceGenerator
 	{
 		CodeBuilder body = new CodeBuilder();
 
-		body.appendIndent(1).appendOverride()
-				.appendIndent(1).append("public void onChange(String value)\n")
-				.appendIndent(1).append("{\n")
-				.appendIndent(2).append("state.removeObserver(this);\n")
-				.appendIndent(2).append("int cursorPosition = editText.getSelectionStart();\n")
-				.appendIndent(2).append("if(cursorPosition == editText.length())\n")
-				.appendIndent(3).append("cursorPosition = -1;\n\n")
-				.appendIndent(2).append("editText.setText(value);\n\n")
-				.appendIndent(2).append("if(cursorPosition == -1)\n")
-				.appendIndent(3).append("cursorPosition = editText.length();\n\n")
-				.appendIndent(2).append("try\n")
-				.appendIndent(2).append("{\n")
-				.appendIndent(3).append("editText.setSelection(cursorPosition);\n")
-				.appendIndent(2).append("}\n")
-				.appendIndent(2).append("catch(IndexOutOfBoundsException e)\n")
-				.appendIndent(2).append("{\n")
-				.appendIndent(3).append("editText.setSelection(editText.length());\n")
-				.appendIndent(2).append("}\n\n")
-				.appendIndent(2).append("state.addObserver(this);\n")
-				.appendIndent(1).append("}");
+		body.indent(1).appendOverride()
+				.indent(1).append("public void onChange(String value)\n")
+				.indent(1).append("{\n")
+				.indent(2).append("state.removeObserver(this);\n")
+				.indent(2).append("int cursorPosition = editText.getSelectionStart();\n")
+				.indent(2).append("if(cursorPosition == editText.length())\n")
+				.indent(3).append("cursorPosition = -1;\n\n")
+				.indent(2).append("editText.setText(value);\n\n")
+				.indent(2).append("if(cursorPosition == -1)\n")
+				.indent(3).append("cursorPosition = editText.length();\n\n")
+				.indent(2).append("try\n")
+				.indent(2).append("{\n")
+				.indent(3).append("editText.setSelection(cursorPosition);\n")
+				.indent(2).append("}\n")
+				.indent(2).append("catch(IndexOutOfBoundsException e)\n")
+				.indent(2).append("{\n")
+				.indent(3).append("editText.setSelection(editText.length());\n")
+				.indent(2).append("}\n\n")
+				.indent(2).append("state.addObserver(this);\n")
+				.indent(1).append("}");
 
 		return body.toString();
 	}

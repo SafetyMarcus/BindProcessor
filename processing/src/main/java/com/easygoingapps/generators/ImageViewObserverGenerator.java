@@ -41,10 +41,10 @@ public class ImageViewObserverGenerator extends SourceGenerator
 	@Override
 	public String getBody()
 	{
-		return new CodeBuilder().appendIndent(1).appendOverride()
-				.appendIndent(1).append("public void onChange(Integer value)\n")
-				.appendIndent(1).append("{\n")
-				.appendIndent(2).append("imageView.setBackground(new ColorDrawable(value));\n")
-				.appendIndent(1).append("}").toString();
+		return new CodeBuilder().indent(1).appendOverride()
+				.indent(1).append("public void onChange(Integer value)\n")
+				.indent(1).append("{\n")
+				.indent(2).append("imageView.setBackground(new ColorDrawable(value));\n")
+				.indent(1).append("}").toString();
 	}
 }

@@ -56,7 +56,7 @@ public abstract class SourceGenerator
 			return "";
 
 		CodeBuilder constructor = new CodeBuilder();
-		constructor.appendIndent(1).append("public " + className + "(");
+		constructor.indent(1).append("public " + className + "(");
 
 		for(int i = 0, size = variables.size(); i < size; i++)
 		{
@@ -67,15 +67,15 @@ public abstract class SourceGenerator
 				constructor.append(", ");
 		}
 
-		constructor.append(")\n").appendIndent(1).append("{\n");
+		constructor.append(")\n").indent(1).append("{\n");
 
 		for(int i = 0, size = variables.size(); i < size; i++)
 		{
 			SourceVariable variable = variables.get(i);
-			constructor.appendIndent(2).append("this.").append(variable.name).append(" = ").append(variable.name).append(";\n");
+			constructor.indent(2).append("this.").append(variable.name).append(" = ").append(variable.name).append(";\n");
 		}
 
-		return constructor.appendIndent(1).append("}\n\n").toString();
+		return constructor.indent(1).append("}\n\n").toString();
 	}
 
 	public abstract String getBody();
