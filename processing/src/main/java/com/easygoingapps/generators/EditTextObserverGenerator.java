@@ -48,28 +48,28 @@ public class EditTextObserverGenerator extends SourceGenerator
 	@Override
 	public String getBody()
 	{
-		StringBuilder body = new StringBuilder();
+		CodeBuilder body = new CodeBuilder();
 
-		body.append(INDENT).append("@Override\n")
-				.append(INDENT).append("public void onChange(String value)\n")
-				.append(INDENT).append("{\n")
-				.append(INDENT).append(INDENT).append("state.removeObserver(this);\n")
-				.append(INDENT).append(INDENT).append("int cursorPosition = editText.getSelectionStart();\n")
-				.append(INDENT).append(INDENT).append("if(cursorPosition == editText.length())\n")
-				.append(INDENT).append(INDENT).append(INDENT).append("cursorPosition = -1;\n\n")
-				.append(INDENT).append(INDENT).append("editText.setText(value);\n\n")
-				.append(INDENT).append(INDENT).append("if(cursorPosition == -1)\n")
-				.append(INDENT).append(INDENT).append(INDENT).append("cursorPosition = editText.length();\n\n")
-				.append(INDENT).append(INDENT).append("try\n")
-				.append(INDENT).append(INDENT).append("{\n")
-				.append(INDENT).append(INDENT).append(INDENT).append("editText.setSelection(cursorPosition);\n")
-				.append(INDENT).append(INDENT).append("}\n")
-				.append(INDENT).append(INDENT).append("catch(IndexOutOfBoundsException e)\n")
-				.append(INDENT).append(INDENT).append("{\n")
-				.append(INDENT).append(INDENT).append(INDENT).append("editText.setSelection(editText.length());\n")
-				.append(INDENT).append(INDENT).append("}\n\n")
-				.append(INDENT).append(INDENT).append("state.addObserver(this);\n")
-				.append(INDENT).append("}");
+		body.appendIndent(1).appendOverride()
+				.appendIndent(1).append("public void onChange(String value)\n")
+				.appendIndent(1).append("{\n")
+				.appendIndent(2).append("state.removeObserver(this);\n")
+				.appendIndent(2).append("int cursorPosition = editText.getSelectionStart();\n")
+				.appendIndent(2).append("if(cursorPosition == editText.length())\n")
+				.appendIndent(3).append("cursorPosition = -1;\n\n")
+				.appendIndent(2).append("editText.setText(value);\n\n")
+				.appendIndent(2).append("if(cursorPosition == -1)\n")
+				.appendIndent(3).append("cursorPosition = editText.length();\n\n")
+				.appendIndent(2).append("try\n")
+				.appendIndent(2).append("{\n")
+				.appendIndent(3).append("editText.setSelection(cursorPosition);\n")
+				.appendIndent(2).append("}\n")
+				.appendIndent(2).append("catch(IndexOutOfBoundsException e)\n")
+				.appendIndent(2).append("{\n")
+				.appendIndent(3).append("editText.setSelection(editText.length());\n")
+				.appendIndent(2).append("}\n\n")
+				.appendIndent(2).append("state.addObserver(this);\n")
+				.appendIndent(1).append("}");
 
 		return body.toString();
 	}

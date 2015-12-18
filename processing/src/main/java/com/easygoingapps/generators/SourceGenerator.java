@@ -7,7 +7,6 @@ import java.util.ArrayList;
  */
 public abstract class SourceGenerator
 {
-	public static final String INDENT = "    ";
 	private static final String PREFIX = "au.com.easygoingapps.thepolice.observers";
 
 	public String className;
@@ -56,26 +55,27 @@ public abstract class SourceGenerator
 		if(!hasConstructor)
 			return "";
 
-		StringBuilder constructor = new StringBuilder(INDENT + "public " + className + "(");
+		CodeBuilder constructor = new CodeBuilder();
+		constructor.appendIndent(1).append("public " + className + "(");
 
 		for(int i = 0, size = variables.size(); i < size; i++)
 		{
 			SourceVariable variable = variables.get(i);
-			constructor.append(variable.type).append(' ').append(variable.name);
+			constructor.append(variable.type).append(" ").append(variable.name);
 
 			if(i < size - 1)
 				constructor.append(", ");
 		}
 
-		constructor.append(")\n").append(INDENT).append("{\n");
+		constructor.append(")\n").appendIndent(1).append("{\n");
 
 		for(int i = 0, size = variables.size(); i < size; i++)
 		{
 			SourceVariable variable = variables.get(i);
-			constructor.append(INDENT).append(INDENT).append("this.").append(variable.name).append(" = ").append(variable.name).append(";\n");
+			constructor.appendIndent(2).append("this.").append(variable.name).append(" = ").append(variable.name).append(";\n");
 		}
 
-		return constructor.append(INDENT).append("}\n\n").toString();
+		return constructor.appendIndent(1).append("}\n\n").toString();
 	}
 
 	public abstract String getBody();

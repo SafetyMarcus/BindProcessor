@@ -45,10 +45,10 @@ public class CheckBoxBinderGenerator extends SourceGenerator
 	@Override
 	public String getBody()
 	{
-		return new StringBuilder().append(INDENT).append("@Override\n")
-				.append(INDENT).append("public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)\n")
-				.append(INDENT).append("{\n")
-				.append(INDENT).append(INDENT).append("value.setValue(isChecked);\n")
-				.append(INDENT).append("}").toString();
+		return new CodeBuilder().appendIndent(1).appendOverride()
+				.appendIndent(1).append("public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)\n")
+				.appendIndent(1).append("{\n")
+				.appendIndent(2).append("value.setValue(isChecked);\n")
+				.appendIndent(1).append("}").toString();
 	}
 }
