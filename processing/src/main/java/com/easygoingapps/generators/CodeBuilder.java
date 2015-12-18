@@ -5,7 +5,7 @@ package com.easygoingapps.generators;
  */
 public class CodeBuilder
 {
-	private static final String INDENT = "    ";
+	private static final String INDENT = "\t";
 
 	private final StringBuilder builder = new StringBuilder();
 
