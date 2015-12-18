@@ -62,7 +62,7 @@ class ImportBuilder extends SourceBuilder
 
 	public ImportBuilder appendView()
 	{
-		return appendWidget("View");
+		return append("import android.view.View;");
 	}
 
 	public ImportBuilder appendObserver()

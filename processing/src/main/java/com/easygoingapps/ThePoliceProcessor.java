@@ -128,15 +128,14 @@ public class ThePoliceProcessor extends AbstractProcessor
 	{
 		for(BindState state : states)
 		{
-			String className = state.qualifiedClassName + "Binding";
-			JavaFileObject jfo = filer.createSourceFile(className);
+			JavaFileObject jfo = filer.createSourceFile(state.qualifiedClassName + "Binding");
 			Writer writer = jfo.openWriter();
 
-			ViewBindingGenerator generator = new ViewBindingGenerator(className);
+			ViewBindingGenerator generator = new ViewBindingGenerator(state.className);
 			String viewBindings = generator.generate();
 
-			viewBindings.replace(PACKAGE, state.qualifiedPackageName);
-			viewBindings.replace(MAPPINGS, state.mappings.toString());
+			viewBindings = viewBindings.replace(PACKAGE, state.packageName);
+			viewBindings = viewBindings.replace(MAPPINGS, "\"" + state.mappings.toString() + "\"");
 
 			writer.write(viewBindings);
 			writer.close();
