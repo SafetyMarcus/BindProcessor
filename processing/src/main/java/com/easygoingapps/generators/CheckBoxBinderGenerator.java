@@ -13,6 +13,12 @@ public class CheckBoxBinderGenerator extends SourceGenerator
 	}
 
 	@Override
+	public String getInterfaces()
+	{
+		return "CheckBox.OnCheckedChangeListener";
+	}
+
+	@Override
 	public String getImports()
 	{
 		ImportBuilder imports = new ImportBuilder();
@@ -31,7 +37,7 @@ public class CheckBoxBinderGenerator extends SourceGenerator
 		VariablesBuilder variables = new VariablesBuilder();
 
 		SourceVariable state = new SourceVariable("private", "State<Boolean>", "value");
-		variables.appendVariable(state, true);
+		variables.appendVariable(state, false);
 		this.variables.add(state);
 
 		return variables.build();
@@ -40,7 +46,7 @@ public class CheckBoxBinderGenerator extends SourceGenerator
 	@Override
 	public String getBody()
 	{
-		return new StringBuilder().append("@Override\n")
+		return new StringBuilder().append(INDENT).append("@Override\n")
 				.append(INDENT).append("public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)\n")
 				.append(INDENT).append("{\n")
 				.append(INDENT).append(INDENT).append("value.setValue(isChecked);\n")

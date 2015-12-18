@@ -7,34 +7,56 @@ import java.util.ArrayList;
  */
 public abstract class SourceGenerator
 {
-	protected static final String INDENT = "    ";
+	public static final String INDENT = "    ";
 	private static final String PREFIX = "au.com.easygoingapps.thepolice.observers.";
 
 	public String className;
+	public boolean hasConstructor;
 	protected ArrayList<SourceVariable> variables = new ArrayList<>();
 
 	public SourceGenerator(String className)
 	{
 		this.className = className;
+		this.hasConstructor = true;
+	}
+
+	public SourceGenerator(String className, boolean hasConstructor)
+	{
+		this.className = className;
+		this.hasConstructor = hasConstructor;
 	}
 
 	public String getPackage()
 	{
-		return PREFIX + className + ';';
+		return "package " + PREFIX + className + ';';
 	}
 
 	public abstract String getImports();
 
 	public abstract String getVariables();
 
+	public String getInterfaces()
+	{
+		return "";
+	}
+
 	public String getClassName()
 	{
-		return "public " + className + "\n{\n";
+		StringBuilder builder = new StringBuilder("public class " + className);
+
+		String interfaces = getInterfaces();
+		if(interfaces.length() > 0)
+			builder.append(" implements ").append(interfaces);
+
+		return builder.append("\n{\n").toString();
 	}
 
 	private String getConstructor()
 	{
-		StringBuilder constructor = new StringBuilder("public " + className + "(");
+		if(!hasConstructor)
+			return "";
+
+		StringBuilder constructor = new StringBuilder(INDENT + "public " + className + "(");
 
 		for(int i = 0, size = variables.size(); i < size; i++)
 		{
@@ -45,15 +67,15 @@ public abstract class SourceGenerator
 				constructor.append(", ");
 		}
 
-		constructor.append("\n{\n");
+		constructor.append(")\n").append(INDENT).append("{\n");
 
 		for(int i = 0, size = variables.size(); i < size; i++)
 		{
 			SourceVariable variable = variables.get(i);
-			constructor.append("this.").append(variable.name).append(" = ").append(variable.name).append(";\n");
+			constructor.append(INDENT).append(INDENT).append("this.").append(variable.name).append(" = ").append(variable.name).append(";\n");
 		}
 
-		return constructor.append("\n}\n\n").toString();
+		return constructor.append(INDENT).append("}\n\n").toString();
 	}
 
 	public abstract String getBody();
@@ -61,10 +83,10 @@ public abstract class SourceGenerator
 	public String generate()
 	{
 		return getPackage() + "\n\n"
-				+ getClassName()
 				+ getImports()
+				+ getClassName()
 				+ getVariables()
 				+ getConstructor()
-				+ getBody() + "}";
+				+ getBody() + "\n}";
 	}
 }

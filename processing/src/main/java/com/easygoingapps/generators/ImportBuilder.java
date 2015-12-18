@@ -5,10 +5,17 @@ package com.easygoingapps.generators;
  */
 class ImportBuilder extends SourceBuilder
 {
-	private static final String ANDROID_WIDGET = "android.widget";
-	private static final String LOCAL_UTIL = "com.easygoingapps.utils";
+	private static final String ANDROID_WIDGET = "import android.widget.";
+	private static final String LOCAL_UTIL = "import com.easygoingapps.utils.";
+	private static final String OBSERVER = "import au.com.easygoingapps.thepolice.observers.";
 
 	private final StringBuilder builder = new StringBuilder();
+
+	public ImportBuilder append(String appendage)
+	{
+		builder.append(appendage).append("\n");
+		return this;
+	}
 
 	private ImportBuilder appendWidget(String importName)
 	{
@@ -22,6 +29,12 @@ class ImportBuilder extends SourceBuilder
 		return this;
 	}
 
+	public ImportBuilder appendObserverClass(String observer)
+	{
+		builder.append(OBSERVER).append(observer).append(";\n");
+		return this;
+	}
+
 	public ImportBuilder appendCheckbox()
 	{
 		return appendWidget("CheckBox");
@@ -30,6 +43,26 @@ class ImportBuilder extends SourceBuilder
 	public ImportBuilder appendCompoundButton()
 	{
 		return appendWidget("CompoundButton");
+	}
+
+	public ImportBuilder appendEditText()
+	{
+		return appendWidget("EditText");
+	}
+
+	public ImportBuilder appendImageView()
+	{
+		return appendWidget("ImageView");
+	}
+
+	public ImportBuilder appendTextView()
+	{
+		return appendWidget("TextView");
+	}
+
+	public ImportBuilder appendView()
+	{
+		return appendWidget("View");
 	}
 
 	public ImportBuilder appendObserver()
@@ -41,6 +74,7 @@ class ImportBuilder extends SourceBuilder
 	{
 		return appendLocalUtil("State");
 	}
+
 
 	@Override
 	public String build()

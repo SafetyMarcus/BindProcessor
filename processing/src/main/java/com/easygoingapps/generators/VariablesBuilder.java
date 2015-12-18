@@ -1,5 +1,7 @@
 package com.easygoingapps.generators;
 
+import static com.easygoingapps.generators.SourceGenerator.INDENT;
+
 /**
  * @author Marcus Hooper
  */
@@ -9,7 +11,7 @@ public class VariablesBuilder extends SourceBuilder
 
 	public VariablesBuilder appendVariable(SourceVariable variable, boolean doubleSpace)
 	{
-		variables.append(variable.access).append(' ').append(variable.name).append(";\n");
+		variables.append(INDENT).append(variable.access).append(' ').append(variable.type).append(' ').append(variable.name).append(";\n");
 
 		if(doubleSpace)
 			variables.append("\n");

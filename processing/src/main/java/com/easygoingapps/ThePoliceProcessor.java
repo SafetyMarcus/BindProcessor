@@ -3,11 +3,8 @@ package com.easygoingapps;
 import com.easygoingapps.annotations.Observe;
 import com.easygoingapps.generators.CheckBoxBinderGenerator;
 import com.easygoingapps.generators.SourceGenerator;
+import com.easygoingapps.generators.ViewBindingGenerator;
 import com.easygoingapps.utils.BindState;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.texen.util.PropertiesUtil;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -26,8 +23,10 @@ import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.Set;
+
+import static com.easygoingapps.generators.ViewBindingGenerator.MAPPINGS;
+import static com.easygoingapps.generators.ViewBindingGenerator.PACKAGE;
 
 @SupportedAnnotationTypes("com.easygoingapps.annotations.Observe")
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
@@ -129,19 +128,17 @@ public class ThePoliceProcessor extends AbstractProcessor
 	{
 		for(BindState state : states)
 		{
-			Properties props = new PropertiesUtil().load("velocity.properties");
-			VelocityEngine ve = new VelocityEngine(props);
-			ve.init();
-			VelocityContext vc = new VelocityContext();
-			vc.put("packageName", state.qualifiedPackageName);
-			vc.put("className", state.className);
-			vc.put("mappings", "\"" + state.mappings + "\"");
-
-			Template template = ve.getTemplate("viewbinding.vm");
-
-			JavaFileObject jfo = filer.createSourceFile(state.qualifiedClassName + "Binding");
+			String className = state.qualifiedClassName + "Binding";
+			JavaFileObject jfo = filer.createSourceFile(className);
 			Writer writer = jfo.openWriter();
-			template.merge(vc, writer);
+
+			ViewBindingGenerator generator = new ViewBindingGenerator(className);
+			String viewBindings = generator.generate();
+
+			viewBindings.replace(PACKAGE, state.qualifiedPackageName);
+			viewBindings.replace(MAPPINGS, state.mappings.toString());
+
+			writer.write(viewBindings);
 			writer.close();
 		}
 	}
