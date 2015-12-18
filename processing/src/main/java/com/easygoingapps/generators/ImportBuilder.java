@@ -7,6 +7,7 @@ class ImportBuilder extends SourceBuilder
 {
 	private static final String ANDROID_WIDGET = "import android.widget.";
 	private static final String ANDROID_TEXT = "import android.text.";
+	private static final String ANDROID_DRAWABLE = "import android.graphics.drawable.";
 	private static final String LOCAL_UTIL = "import com.easygoingapps.utils.";
 	private static final String OBSERVER = "import au.com.easygoingapps.thepolice.observers.";
 
@@ -79,6 +80,12 @@ class ImportBuilder extends SourceBuilder
 	public ImportBuilder appendText(String importName)
 	{
 		builder.append(ANDROID_TEXT).append(importName).append(";\n");
+		return this;
+	}
+
+	public ImportBuilder appendDrawable(String importName)
+	{
+		builder.append(ANDROID_DRAWABLE).append(importName).append(";\n");
 		return this;
 	}
 
