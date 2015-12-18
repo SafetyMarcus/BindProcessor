@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public abstract class SourceGenerator
 {
 	public static final String INDENT = "    ";
-	private static final String PREFIX = "au.com.easygoingapps.thepolice.observers.";
+	private static final String PREFIX = "au.com.easygoingapps.thepolice.observers";
 
 	public String className;
 	public boolean hasConstructor;
@@ -28,7 +28,7 @@ public abstract class SourceGenerator
 
 	public String getPackage()
 	{
-		return "package " + PREFIX + className + ';';
+		return "package " + PREFIX + ';';
 	}
 
 	public abstract String getImports();

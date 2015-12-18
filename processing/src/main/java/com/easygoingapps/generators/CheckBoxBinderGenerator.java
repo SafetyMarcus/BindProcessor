@@ -25,7 +25,6 @@ public class CheckBoxBinderGenerator extends SourceGenerator
 
 		imports.appendCheckbox()
 				.appendCompoundButton()
-				.appendObserver()
 				.appendState();
 
 		return imports.build();

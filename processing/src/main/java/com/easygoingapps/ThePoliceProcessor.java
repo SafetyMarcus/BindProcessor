@@ -2,6 +2,7 @@ package com.easygoingapps;
 
 import com.easygoingapps.annotations.Observe;
 import com.easygoingapps.generators.CheckBoxBinderGenerator;
+import com.easygoingapps.generators.CheckBoxObserverGenerator;
 import com.easygoingapps.generators.SourceGenerator;
 import com.easygoingapps.generators.ViewBindingGenerator;
 import com.easygoingapps.utils.BindState;
@@ -71,6 +72,7 @@ public class ThePoliceProcessor extends AbstractProcessor
 	{
 		ArrayList<SourceGenerator> generators = new ArrayList<>();
 		generators.add(new CheckBoxBinderGenerator());
+		generators.add(new CheckBoxObserverGenerator());
 		for(SourceGenerator generator : generators)
 		{
 			JavaFileObject jfo = filer.createSourceFile(generator.className);
