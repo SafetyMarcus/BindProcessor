@@ -1,10 +1,14 @@
 package com.easygoingapps;
 
 import com.easygoingapps.annotations.Observe;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.texen.util.PropertiesUtil;
+import com.easygoingapps.generators.CheckBoxBinderGenerator;
+import com.easygoingapps.generators.CheckBoxObserverGenerator;
+import com.easygoingapps.generators.EditTextBinderGenerator;
+import com.easygoingapps.generators.EditTextObserverGenerator;
+import com.easygoingapps.generators.ImageViewObserverGenerator;
+import com.easygoingapps.generators.SourceGenerator;
+import com.easygoingapps.generators.TextViewObserverGenerator;
+import com.easygoingapps.generators.ViewBindingGenerator;
 import com.easygoingapps.utils.BindState;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -24,15 +28,15 @@ import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Properties;
 import java.util.Set;
+
+import static com.easygoingapps.generators.ViewBindingGenerator.MAPPINGS;
+import static com.easygoingapps.generators.ViewBindingGenerator.PACKAGE;
 
 @SupportedAnnotationTypes("com.easygoingapps.annotations.Observe")
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class ThePoliceProcessor extends AbstractProcessor
 {
-	private static final String PREFIX = "au.com.easygoingapps.thepolice.observers.";
 	Filer filer;
 
 	@Override
@@ -70,24 +74,18 @@ public class ThePoliceProcessor extends AbstractProcessor
 
 	private void setUpObservers() throws IOException
 	{
-		HashMap<String, String> observers = new HashMap<>();
-		observers.put("edittextbinding.vm", PREFIX + "EditTextObservers");
-		observers.put("checkboxbinding.vm", PREFIX + "CheckBoxObservers");
-		observers.put("imageviewbinding.vm", PREFIX + "ImageViewObservers");
-		observers.put("textviewbinding.vm", PREFIX + "TextViewObservers");
-
-		for(String templateName : observers.keySet())
+		ArrayList<SourceGenerator> generators = new ArrayList<>();
+		generators.add(new CheckBoxBinderGenerator());
+		generators.add(new CheckBoxObserverGenerator());
+		generators.add(new EditTextBinderGenerator());
+		generators.add(new EditTextObserverGenerator());
+		generators.add(new ImageViewObserverGenerator());
+		generators.add(new TextViewObserverGenerator());
+		for(SourceGenerator generator : generators)
 		{
-			Properties props = new PropertiesUtil().load("velocity.properties");
-			VelocityEngine ve = new VelocityEngine(props);
-			ve.init();
-			VelocityContext vc = new VelocityContext();
-
-			Template template = ve.getTemplate(templateName);
-
-			JavaFileObject jfo = filer.createSourceFile(observers.get(templateName));
+			JavaFileObject jfo = filer.createSourceFile(generator.className);
 			Writer writer = jfo.openWriter();
-			template.merge(vc, writer);
+			writer.write(generator.generate());
 			writer.close();
 		}
 	}
@@ -140,19 +138,16 @@ public class ThePoliceProcessor extends AbstractProcessor
 	{
 		for(BindState state : states)
 		{
-			Properties props = new PropertiesUtil().load("velocity.properties");
-			VelocityEngine ve = new VelocityEngine(props);
-			ve.init();
-			VelocityContext vc = new VelocityContext();
-			vc.put("packageName", state.qualifiedPackageName);
-			vc.put("className", state.className);
-			vc.put("mappings", "\"" + state.mappings + "\"");
-
-			Template template = ve.getTemplate("viewbinding.vm");
-
 			JavaFileObject jfo = filer.createSourceFile(state.qualifiedClassName + "Binding");
 			Writer writer = jfo.openWriter();
-			template.merge(vc, writer);
+
+			ViewBindingGenerator generator = new ViewBindingGenerator(state.className);
+			String viewBindings = generator.generate();
+
+			viewBindings = viewBindings.replace(PACKAGE, state.packageName);
+			viewBindings = viewBindings.replace(MAPPINGS, "\"" + state.mappings.toString() + "\"");
+
+			writer.write(viewBindings);
 			writer.close();
 		}
 	}
