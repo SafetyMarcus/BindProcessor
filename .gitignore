@@ -5,3 +5,5 @@
 .DS_Store
 /build
 /captures
+processing/processing.iml
+app/app.iml
