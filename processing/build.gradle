@@ -4,7 +4,7 @@ apply plugin: 'com.jfrog.bintray'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-version = '1.0.3'
+version = '1.0.4'
 
 task policeJar(type: Jar){
     manifest{
@@ -73,7 +73,6 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives javadocJar
     archives sourcesJar
-    archives policeJar
 }
 
 Properties properties = new Properties()
