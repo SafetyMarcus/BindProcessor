@@ -7,22 +7,29 @@ import java.util.ArrayList;
  */
 public abstract class SourceGenerator
 {
-	private static final String PREFIX = "au.com.easygoingapps.thepolice.observers";
+	private static final String PREFIX = "com.easygoingapps.thepolice.observers";
 
 	public String className;
 	public boolean hasConstructor;
+	public boolean isAbstract;
+
 	protected ArrayList<SourceVariable> variables = new ArrayList<>();
 
 	public SourceGenerator(String className)
 	{
-		this.className = className;
-		this.hasConstructor = true;
+		this(className, true, false);
 	}
 
 	public SourceGenerator(String className, boolean hasConstructor)
 	{
+		this(className, hasConstructor, false);
+	}
+
+	public SourceGenerator(String className, boolean hasConstructor, boolean isAbstract)
+	{
 		this.className = className;
 		this.hasConstructor = hasConstructor;
+		this.isAbstract = isAbstract;
 	}
 
 	public String getPackage()
@@ -41,7 +48,12 @@ public abstract class SourceGenerator
 
 	public String getClassName()
 	{
-		StringBuilder builder = new StringBuilder("public class " + className);
+		StringBuilder builder = new StringBuilder("public ");
+
+		if(isAbstract)
+			builder.append("abstract ");
+
+		builder.append("class ").append(className);
 
 		String interfaces = getInterfaces();
 		if(interfaces.length() > 0)

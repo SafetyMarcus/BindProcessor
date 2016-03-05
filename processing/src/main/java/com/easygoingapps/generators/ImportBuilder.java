@@ -8,8 +8,9 @@ class ImportBuilder extends SourceBuilder
 	private static final String ANDROID_WIDGET = "import android.widget.";
 	private static final String ANDROID_TEXT = "import android.text.";
 	private static final String ANDROID_DRAWABLE = "import android.graphics.drawable.";
+	private static final String THE_POLICE = "import com.easygoingapps.thepolice.";
 	private static final String LOCAL_UTIL = "import com.easygoingapps.utils.";
-	private static final String OBSERVER = "import au.com.easygoingapps.thepolice.observers.";
+	private static final String OBSERVER = THE_POLICE + "observers.";
 
 	private final StringBuilder builder = new StringBuilder();
 
@@ -34,6 +35,12 @@ class ImportBuilder extends SourceBuilder
 	public ImportBuilder appendObserverClass(String observer)
 	{
 		builder.append(OBSERVER).append(observer).append(";\n");
+		return this;
+	}
+
+	public ImportBuilder appendThePoliceClass(String className)
+	{
+		builder.append(THE_POLICE).append(className).append(";\n");
 		return this;
 	}
 

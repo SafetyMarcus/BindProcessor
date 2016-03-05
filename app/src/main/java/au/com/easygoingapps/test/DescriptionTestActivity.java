@@ -10,7 +10,7 @@ import com.easygoingapps.utils.State;
 /**
  * @author Marcus Hooper
  */
-public class DescriptionTest extends Activity
+public class DescriptionTestActivity extends Activity
 {
 	@Observe(R.id.title)
 	public State<String> title;
@@ -25,7 +25,7 @@ public class DescriptionTest extends Activity
 		Descriptor descriptor = DescriptionManager.getCurrentDescriptor();
 		title = descriptor.title;
 		description = descriptor.description;
-		DescriptionTestBinding.watch(this);
+		au.com.easygoingapps.test.ThePolice.watch(this);
 
 		findViewById(R.id.fab).setOnClickListener(new View.OnClickListener()
 		{
