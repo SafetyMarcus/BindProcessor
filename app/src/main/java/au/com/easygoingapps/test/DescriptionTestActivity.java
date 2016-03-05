@@ -25,7 +25,7 @@ public class DescriptionTestActivity extends Activity
 		Descriptor descriptor = DescriptionManager.getCurrentDescriptor();
 		title = descriptor.title;
 		description = descriptor.description;
-		au.com.easygoingapps.test.ThePolice.watch(this);
+		ThePolice.watch(this);
 
 		findViewById(R.id.fab).setOnClickListener(new View.OnClickListener()
 		{

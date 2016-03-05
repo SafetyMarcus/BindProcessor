@@ -50,10 +50,9 @@ public class ThePoliceProcessor extends AbstractProcessor
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
 	{
-		ArrayList<BindState> states = setUpStates(roundEnv);
 		try
 		{
-			setUpObservers(states);
+			setUpObservers();
 		}
 		catch(IOException e)
 		{
@@ -62,6 +61,7 @@ public class ThePoliceProcessor extends AbstractProcessor
 
 		try
 		{
+			ArrayList<BindState> states = setUpStates(roundEnv);
 			createBindingClasses(states);
 		}
 		catch(IOException e)
@@ -73,7 +73,7 @@ public class ThePoliceProcessor extends AbstractProcessor
 		return true;
 	}
 
-	private void setUpObservers(ArrayList<BindState> states) throws IOException
+	private void setUpObservers() throws IOException
 	{
 		ArrayList<SourceGenerator> generators = new ArrayList<>();
 		generators.add(new CheckBoxBinderGenerator());
@@ -82,7 +82,6 @@ public class ThePoliceProcessor extends AbstractProcessor
 		generators.add(new EditTextObserverGenerator());
 		generators.add(new ImageViewObserverGenerator());
 		generators.add(new TextViewObserverGenerator());
-		generators.add(new ThePoliceGenerator(states));
 		for(SourceGenerator generator : generators)
 		{
 			JavaFileObject jfo = filer.createSourceFile(generator.className);
@@ -152,5 +151,11 @@ public class ThePoliceProcessor extends AbstractProcessor
 			writer.write(viewBindings);
 			writer.close();
 		}
+
+		ThePoliceGenerator policeGenerator = new ThePoliceGenerator(states);
+		JavaFileObject jfo = filer.createSourceFile(states.get(0).packageName + "." + policeGenerator.className);
+		Writer writer = jfo.openWriter();
+		writer.write(policeGenerator.generate());
+		writer.close();
 	}
 }

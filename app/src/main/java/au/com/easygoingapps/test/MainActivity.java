@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
 		title.addObserver(stringObserver);
 		checked.addObserver(boolObserver);
 		varName = DescriptionManager.getCurrentDescriptor().title;
-		au.com.easygoingapps.test.ThePolice.watch(this);
+		ThePolice.watch(this);
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);

@@ -34,7 +34,7 @@ public class DescriptionFragment extends DialogFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View view = View.inflate(getActivity(), R.layout.description_fragment, container);
-		au.com.easygoingapps.test.ThePolice.watch(view, this);
+		ThePolice.watch(view, this);
 
 		return view;
 	}
