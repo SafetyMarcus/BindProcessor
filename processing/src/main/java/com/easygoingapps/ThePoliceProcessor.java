@@ -137,6 +137,8 @@ public class ThePoliceProcessor extends AbstractProcessor
 
 	private void createBindingClasses(ArrayList<BindState> states) throws IOException
 	{
+		boolean hasSetUpMapper = false;
+
 		for(BindState state : states)
 		{
 			JavaFileObject jfo = filer.createSourceFile(state.qualifiedClassName + "Binding");
@@ -150,12 +152,17 @@ public class ThePoliceProcessor extends AbstractProcessor
 
 			writer.write(viewBindings);
 			writer.close();
-		}
 
-		ThePoliceGenerator policeGenerator = new ThePoliceGenerator(states);
-		JavaFileObject jfo = filer.createSourceFile(states.get(0).packageName + "." + policeGenerator.className);
-		Writer writer = jfo.openWriter();
-		writer.write(policeGenerator.generate());
-		writer.close();
+			if(hasSetUpMapper)
+				continue;
+
+			ThePoliceGenerator policeGenerator = new ThePoliceGenerator(states);
+			jfo = filer.createSourceFile(state.qualifiedClassName.replace(state.className, policeGenerator.className));
+			writer = jfo.openWriter();
+			writer.write(policeGenerator.generate());
+			writer.close();
+
+			hasSetUpMapper = true;
+		}
 	}
 }
