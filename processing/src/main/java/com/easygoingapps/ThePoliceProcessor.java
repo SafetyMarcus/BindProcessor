@@ -156,7 +156,7 @@ public class ThePoliceProcessor extends AbstractProcessor
 			if(hasSetUpMapper)
 				continue;
 
-			ThePoliceGenerator policeGenerator = new ThePoliceGenerator(states);
+			ThePoliceGenerator policeGenerator = new ThePoliceGenerator(state);
 			jfo = filer.createSourceFile(state.qualifiedClassName.replace(state.className, policeGenerator.className));
 			writer = jfo.openWriter();
 			writer.write(policeGenerator.generate());

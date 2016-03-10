@@ -10,18 +10,18 @@ import java.util.ArrayList;
 public class ThePoliceGenerator extends SourceGenerator
 {
 	public static final String NAME = "ThePolice";
-	private ArrayList<BindState> states;
+	private BindState firstState;
 
-	public ThePoliceGenerator(ArrayList<BindState> states)
+	public ThePoliceGenerator(BindState state)
 	{
 		super(NAME, false);
-		this.states = states;
+		this.firstState = state;
 	}
 
 	@Override
 	public String getPackage()
 	{
-		return "package " + states.get(0).packageName + ";";
+		return "package " + firstState.packageName + ";";
 	}
 
 	@Override
@@ -29,8 +29,10 @@ public class ThePoliceGenerator extends SourceGenerator
 	{
 		ImportBuilder imports = new ImportBuilder()
 				.appendView()
-				.append("import android.app.Activity;")
-				.append("import android.app.Fragment;");
+				.append("import android.app.Activity;\n")
+				.append("import android.app.Fragment;\n")
+				.append("import android.util.Log;\n")
+				.append("import java.lang.reflect.Method;\n\n");
 
 		return imports.build();
 	}
@@ -38,7 +40,7 @@ public class ThePoliceGenerator extends SourceGenerator
 	@Override
 	public String getVariables()
 	{
-		return "";
+		return "\tprivate static final String LOG_TAG = \"ThePolice\";\n\n";
 	}
 
 	@Override
@@ -47,60 +49,30 @@ public class ThePoliceGenerator extends SourceGenerator
 		return new CodeBuilder()
 				.indent(1).append("public static void watch(Activity activity)\n")
 				.indent(1).append("{\n")
-				.append(addActivityMappings())
+				.indent(2).append("try\n")
+				.indent(2).append("{\n")
+				.indent(3).append("Class<?> bindingClass = Class.forName(activity.getClass().getName() + \"Binding\");\n")
+				.indent(3).append("Method method = bindingClass.getMethod(\"watch\", Activity.class);\n")
+				.indent(3).append("method.invoke(bindingClass, activity);\n")
+				.indent(2).append("}\n")
+				.indent(2).append("catch(Exception e)\n")
+				.indent(2).append("{\n")
+				.indent(3).append("Log.e(LOG_TAG, \"Exception finding watch method for \" + activity.getClass().getName());\n")
+				.indent(2).append("}\n")
 				.indent(1).append("}\n\n")
 				.indent(1).append("public static void watch(View layout, Fragment fragment)\n")
 				.indent(1).append("{\n")
-				.append(addFragmentMappings())
-				.indent(1).append("}\n")
+				.indent(2).append("try\n")
+				.indent(2).append("{\n")
+				.indent(3).append("Class<?> bindingClass = Class.forName(fragment.getClass().getName() + \"Binding\");\n")
+				.indent(3).append("Method method = bindingClass.getMethod(\"watch\", View.class, Fragment.class);\n")
+				.indent(3).append("method.invoke(bindingClass, layout, fragment);\n")
+				.indent(2).append("}\n")
+				.indent(2).append("catch(Exception e)\n")
+				.indent(2).append("{\n")
+				.indent(3).append("Log.e(LOG_TAG, \"Exception finding watch method for \" + fragment.getClass().getName());\n")
+				.indent(2).append("}\n")
+				.indent(1).append("}")
 				.toString();
-	}
-
-	private String addActivityMappings()
-	{
-		CodeBuilder mappings = new CodeBuilder();
-		int added = 0;
-
-		for(BindState state : states)
-		{
-			if(state.className.contains("Fragment"))
-				continue;
-
-			mappings.indent(2);
-
-			if(added > 0)
-				mappings.append("else ");
-
-			mappings.append("if(activity instanceof ").append(state.className).append(")\n")
-					.indent(3).append(state.className).append("Binding.watch(activity);\n");
-
-			added++;
-		}
-
-		return mappings.toString();
-	}
-
-	private String addFragmentMappings()
-	{
-		CodeBuilder mappings = new CodeBuilder();
-		int added = 0;
-
-		for(BindState state : states)
-		{
-			if(state.className.contains("Activity"))
-				continue;
-
-			mappings.indent(2);
-
-			if(added > 0)
-				mappings.append("else ");
-
-			mappings.append("if(fragment instanceof ").append(state.className).append(")\n")
-					.indent(3).append(state.className).append("Binding.watch(layout, fragment);\n");
-
-			added++;
-		}
-
-		return mappings.toString();
 	}
 }
