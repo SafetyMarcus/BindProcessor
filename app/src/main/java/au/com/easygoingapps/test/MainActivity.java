@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
 		title.addObserver(stringObserver);
 		checked.addObserver(boolObserver);
 		varName = DescriptionManager.getCurrentDescriptor().title;
-		MainActivityBinding.watch(this);
+		ThePolice.watch(this);
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onClick(View view)
 			{
-				Intent intent = new Intent(MainActivity.this, DescriptionTest.class);
+				Intent intent = new Intent(MainActivity.this, DescriptionTestActivity.class);
 				startActivity(intent);
 				title.setValue(String.valueOf(new Random().nextInt(10)));
 			}

@@ -8,6 +8,7 @@ import com.easygoingapps.generators.EditTextObserverGenerator;
 import com.easygoingapps.generators.ImageViewObserverGenerator;
 import com.easygoingapps.generators.SourceGenerator;
 import com.easygoingapps.generators.TextViewObserverGenerator;
+import com.easygoingapps.generators.ThePoliceGenerator;
 import com.easygoingapps.generators.ViewBindingGenerator;
 import com.easygoingapps.utils.BindState;
 
@@ -58,9 +59,9 @@ public class ThePoliceProcessor extends AbstractProcessor
 			processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "IOException setting up observers: " + e.getMessage());
 		}
 
-		ArrayList<BindState> states = setUpStates(roundEnv);
 		try
 		{
+			ArrayList<BindState> states = setUpStates(roundEnv);
 			createBindingClasses(states);
 		}
 		catch(IOException e)
@@ -136,6 +137,8 @@ public class ThePoliceProcessor extends AbstractProcessor
 
 	private void createBindingClasses(ArrayList<BindState> states) throws IOException
 	{
+		boolean hasSetUpMapper = false;
+
 		for(BindState state : states)
 		{
 			JavaFileObject jfo = filer.createSourceFile(state.qualifiedClassName + "Binding");
@@ -149,6 +152,17 @@ public class ThePoliceProcessor extends AbstractProcessor
 
 			writer.write(viewBindings);
 			writer.close();
+
+			if(hasSetUpMapper)
+				continue;
+
+			ThePoliceGenerator policeGenerator = new ThePoliceGenerator(state);
+			jfo = filer.createSourceFile(state.qualifiedClassName.replace(state.className, policeGenerator.className));
+			writer = jfo.openWriter();
+			writer.write(policeGenerator.generate());
+			writer.close();
+
+			hasSetUpMapper = true;
 		}
 	}
 }

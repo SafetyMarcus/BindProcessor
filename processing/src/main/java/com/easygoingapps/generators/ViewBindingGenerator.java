@@ -197,7 +197,7 @@ public class ViewBindingGenerator extends SourceGenerator
 				.indent(3).append("value.addObserver(observer);\n")
 				.indent(3).append("value.setValue(value.getValue());\n")
 				.indent(2).append("}\n")
-				.indent(2).append("return observer;")
+				.indent(2).append("return observer;\n")
 				.indent(1).append("}");
 	}
 }
