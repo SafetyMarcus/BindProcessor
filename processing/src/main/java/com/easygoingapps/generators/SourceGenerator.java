@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public abstract class SourceGenerator
 {
-	private static final String PREFIX = "com.easygoingapps.thepolice.observers";
+	private static final String PREFIX = "com.easygoingapps.observers";
 
 	public String className;
 	public boolean hasConstructor;

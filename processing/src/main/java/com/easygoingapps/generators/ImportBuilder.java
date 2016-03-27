@@ -8,7 +8,7 @@ class ImportBuilder extends SourceBuilder
 	private static final String ANDROID_WIDGET = "import android.widget.";
 	private static final String ANDROID_TEXT = "import android.text.";
 	private static final String ANDROID_DRAWABLE = "import android.graphics.drawable.";
-	private static final String THE_POLICE = "import com.easygoingapps.thepolice.";
+	private static final String THE_POLICE = "import com.easygoingapps.";
 	private static final String LOCAL_UTIL = "import com.easygoingapps.utils.";
 	private static final String OBSERVER = THE_POLICE + "observers.";
 
