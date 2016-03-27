@@ -19,7 +19,4 @@ ThePolice can be included in any gradle project that is using `jcenter` as a rep
 That's it! It's that simple.
 
 #Jar
-Although, if you really want (have) to do things the hard way, you can download the latest <a href="https://drive.google.com/file/d/0B9zL9B65mpLlMi14MF91NTEyakk/view?usp=sharing">JAR</a> and add it to your project. This will also require that you add `classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'` to your top level `build.gradle` and `apply plugin: 'com.neenbedankt.android-apt'` to the `build.gradle` file for your module.
-
-#Limitations
-Currently bindings are only created when an Activity/Fragment calls `ThePolice.watch()` (recommended in `onCreate`). This means that if the bindings are being used for a view that is being recycled, it can end up with a null state. This is obviously not ideal.
+The latest <a href="https://bintray.com/artifact/download/safetymarcus/maven/1.0.7/ThePolice-1.0.7.jar">JAR</a> contains some improvements over the 1.0.4 version on gradle (it is version 1.0.7). Feel free to use it directly while the gradle version is being set up. This will require that you add `compile 'org.apache.commons:commons-lang3:3.4'` to the `build.gradle` file for your module as it is currently a dependency for the Jar.
