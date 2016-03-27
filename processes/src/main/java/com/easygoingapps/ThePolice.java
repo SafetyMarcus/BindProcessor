@@ -16,16 +16,38 @@ public class ThePolice
 
 	public static void watch(Activity activity)
 	{
+		String activityName = activity.getClass().getName();
 		try
 		{
-			Class<?> bindingClass = Class.forName(activity.getClass().getName() + "Binding");
-			Method method = bindingClass.getMethod("watch", Activity.class);
-			method.invoke(bindingClass, activity);
+			invokeMethod(Class.forName(activityName + "Binding"), activity);
 		}
 		catch(Exception e)
 		{
-			Log.e(LOG_TAG, "Exception finding watch method for " + activity.getClass().getName());
+			Log.i(LOG_TAG, "Exception binding for activity. Checking super class");
+			Class superClass = activity.getClass().getSuperclass();
+			if(superClass != null)
+			{
+				try
+				{
+					invokeMethod(Class.forName(superClass.getName() + "Binding"), activity);
+				}
+				catch(Exception e1)
+				{
+					Log.e(LOG_TAG, "Exception Binding " + activityName);
+				}
+			}
+			else
+				Log.e(LOG_TAG, "Exception Binding " + activityName);
 		}
+	}
+
+	private static void invokeMethod(Class bindingClass, Activity activity) throws Exception
+	{
+		if(bindingClass == null) //Throwing to break into catch clause
+			throw new ClassNotFoundException();
+
+		Method method = bindingClass.getMethod("watch", Activity.class);
+		method.invoke(bindingClass, activity);
 	}
 
 	public static void watch(View layout, Fragment fragment)
