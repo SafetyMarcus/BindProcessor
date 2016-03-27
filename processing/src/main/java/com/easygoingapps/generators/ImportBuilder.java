@@ -11,6 +11,7 @@ class ImportBuilder extends SourceBuilder
 	private static final String THE_POLICE = "import com.easygoingapps.";
 	private static final String LOCAL_UTIL = "import com.easygoingapps.utils.";
 	private static final String OBSERVER = THE_POLICE + "observers.";
+	private static final String BINDER = THE_POLICE + "binders.";
 
 	private final StringBuilder builder = new StringBuilder();
 
@@ -35,6 +36,12 @@ class ImportBuilder extends SourceBuilder
 	public ImportBuilder appendObserverClass(String observer)
 	{
 		builder.append(OBSERVER).append(observer).append(";\n");
+		return this;
+	}
+
+	public ImportBuilder appendBinderClass(String observer)
+	{
+		builder.append(BINDER).append(observer).append(";\n");
 		return this;
 	}
 

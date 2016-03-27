@@ -1,13 +1,6 @@
 package com.easygoingapps;
 
 import com.easygoingapps.annotations.Observe;
-import com.easygoingapps.generators.CheckBoxBinderGenerator;
-import com.easygoingapps.generators.CheckBoxObserverGenerator;
-import com.easygoingapps.generators.EditTextBinderGenerator;
-import com.easygoingapps.generators.EditTextObserverGenerator;
-import com.easygoingapps.generators.ImageViewObserverGenerator;
-import com.easygoingapps.generators.SourceGenerator;
-import com.easygoingapps.generators.TextViewObserverGenerator;
 import com.easygoingapps.generators.ViewBindingGenerator;
 import com.easygoingapps.utils.BindState;
 
@@ -51,15 +44,6 @@ public class ThePoliceProcessor extends AbstractProcessor
 	{
 		try
 		{
-			setUpObservers();
-		}
-		catch(IOException e)
-		{
-			processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "IOException setting up observers: " + e.getMessage());
-		}
-
-		try
-		{
 			ArrayList<BindState> states = setUpStates(roundEnv);
 			createBindingClasses(states);
 		}
@@ -70,24 +54,6 @@ public class ThePoliceProcessor extends AbstractProcessor
 		}
 
 		return true;
-	}
-
-	private void setUpObservers() throws IOException
-	{
-		ArrayList<SourceGenerator> generators = new ArrayList<>();
-		generators.add(new CheckBoxBinderGenerator());
-		generators.add(new CheckBoxObserverGenerator());
-		generators.add(new EditTextBinderGenerator());
-		generators.add(new EditTextObserverGenerator());
-		generators.add(new ImageViewObserverGenerator());
-		generators.add(new TextViewObserverGenerator());
-		for(SourceGenerator generator : generators)
-		{
-			JavaFileObject jfo = filer.createSourceFile(generator.className);
-			Writer writer = jfo.openWriter();
-			writer.write(generator.generate());
-			writer.close();
-		}
 	}
 
 	private ArrayList<BindState> setUpStates(RoundEnvironment roundEnv)
