@@ -20,3 +20,6 @@ That's it! It's that simple.
 
 #Jar
 Although, if you really want (have) to do things the hard way, you can download the latest <a href="https://drive.google.com/file/d/0B9zL9B65mpLlMi14MF91NTEyakk/view?usp=sharing">JAR</a> and add it to your project. This will also require that you add `classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'` to your top level `build.gradle` and `apply plugin: 'com.neenbedankt.android-apt'` to the `build.gradle` file for your module.
+
+#Limitations
+Currently bindings are only created when an Activity/Fragment calls `ThePolice.watch()` (recommended in `onCreate`). This means that if the bindings are being used for a view that is being recycled, it can end up with a null state. This is obviously not ideal.
