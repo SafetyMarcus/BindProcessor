@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import au.com.easygoingapps.bindprocessor.R;
+import com.easygoingapps.ThePolice;
 import com.easygoingapps.annotations.Observe;
 import com.easygoingapps.utils.State;
 

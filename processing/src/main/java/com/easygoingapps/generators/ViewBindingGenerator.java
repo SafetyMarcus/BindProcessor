@@ -23,9 +23,9 @@ public class ViewBindingGenerator extends SourceGenerator
 	public String getImports()
 	{
 		ImportBuilder imports = new ImportBuilder();
-		imports.appendObserverClass("CheckboxBinder")
+		imports.appendBinderClass("CheckboxBinder")
 				.appendObserverClass("CheckboxObserver")
-				.appendObserverClass("EditTextBinder")
+				.appendBinderClass("EditTextBinder")
 				.appendObserverClass("EditTextObserver")
 				.appendObserverClass("TextViewObserver")
 				.appendObserverClass("ImageViewObserver")
