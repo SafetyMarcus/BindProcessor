@@ -21,3 +21,30 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
+
+// Jar
+task androidJar(type: Jar) {
+    dependsOn assemble
+    group 'Build'
+    baseName = 'ThePolice'
+    from zipTree(
+            'build/intermediates/bundles/release/classes.jar')
+    from zipTree(
+            '../processing/build/libs/processing.jar')
+}
+
+// javadoc tasks
+//android.libraryVariants.all { variant ->
+//    task("javadoc${variant.name.capitalize()}", type: Javadoc) {
+//        description "Generates Javadoc for $variant.name."
+//        group 'Docs'
+//        source = variant.javaCompile.source
+//        source "../annotations/src/main/java"
+//        ext.androidJar = files(plugins
+//                .findPlugin("com.android.library").getClass())
+//        classpath = files(variant.javaCompile.classpath.files)
+//        + ext.androidJar
+//        exclude '**/BuildConfig.java'
+//        exclude '**/R.java'
+//    }
+//}

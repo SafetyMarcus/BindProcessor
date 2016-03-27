@@ -21,15 +21,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-apply plugin: 'java'
-
-task policeJar(type: Jar){
-    manifest{
-        attributes 'Implementation-Version' : '1.0.6'
-    }
-    baseName = 'ThePolice'
-    from "processes/src/main/java"
-    from "processing/src/main/java"
-    with jar
-}
