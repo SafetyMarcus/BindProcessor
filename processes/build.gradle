@@ -1,5 +1,9 @@
 apply plugin: 'com.android.library'
 
+def siteUrl = 'https://github.com/SafetyMarcus/ThePolice'
+def gitUrl = 'https://github.com/SafetyMarcus/ThePolice.git'
+group = "com.easygoingapps"
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -8,7 +12,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.7"
     }
     buildTypes {
         release {
@@ -26,7 +30,7 @@ dependencies {
 // Jar
 task androidJar(type: Jar) {
     dependsOn assemble
-    group 'Build'
+    group group
     baseName = 'ThePolice'
     from zipTree(
             'build/intermediates/bundles/release/classes.jar')
@@ -34,18 +38,21 @@ task androidJar(type: Jar) {
             '../processing/build/libs/processing.jar')
 }
 
-// javadoc tasks
-//android.libraryVariants.all { variant ->
-//    task("javadoc${variant.name.capitalize()}", type: Javadoc) {
-//        description "Generates Javadoc for $variant.name."
-//        group 'Docs'
-//        source = variant.javaCompile.source
-//        source "../annotations/src/main/java"
-//        ext.androidJar = files(plugins
-//                .findPlugin("com.android.library").getClass())
-//        classpath = files(variant.javaCompile.classpath.files)
-//        + ext.androidJar
-//        exclude '**/BuildConfig.java'
-//        exclude '**/R.java'
-//    }
-//}
+// sources Jar
+task androidSourcesJar(type: Jar) {
+    baseName = "ThePoliceSources"
+    from android.sourceSets.main.java.srcDirs
+}
+
+// Javadoc Jar
+android.libraryVariants.all { variant ->
+    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+        description "Generates Javadoc for $variant.name."
+        source = variant.javaCompile.source
+        classpath = files(variant.javaCompile.classpath.files) + files(android.bootClasspath)
+        options.links("http://docs.oracle.com/javase/7/docs/api/");
+        options.links("http://d.android.com/reference/");
+        exclude '**/BuildConfig.java'
+        exclude '**/R.java'
+    }
+}
